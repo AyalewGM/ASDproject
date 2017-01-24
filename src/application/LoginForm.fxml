@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane prefHeight="340.0" prefWidth="533.0" style="-fx-border-color: orange; -fx-border-width: 5px;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
+   <children>
+      <GridPane alignment="TOP_CENTER" layoutX="121.0" layoutY="137.0" prefHeight="114.0" prefWidth="300.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.0" minWidth="10.0" prefWidth="158.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="96.0" minWidth="2.0" prefWidth="26.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.0" minWidth="10.0" prefWidth="165.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="48.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="56.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="131.0" text="CANCEL" textAlignment="CENTER" textFill="#e80a0a" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="146.0" text="LOGIN" textAlignment="CENTER" textFill="#3ada21" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label text="Username:" />
+            <Label text="Password:" GridPane.rowIndex="1" />
+            <TextField prefHeight="30.0" prefWidth="144.0" GridPane.columnIndex="2" />
+            <PasswordField prefHeight="30.0" prefWidth="144.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+      <ImageView fitHeight="63.0" fitWidth="218.0" layoutX="217.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/logo.png" />
+         </image>
+      </ImageView>
+      <Separator layoutX="59.0" layoutY="106.0" prefHeight="1.0" prefWidth="410.0" style="-fx-background-color: red;" />
+      <ImageView fitHeight="79.0" fitWidth="63.0" layoutX="128.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/logo_mum.jpg" />
+         </image>
+      </ImageView>
+      <Label graphicTextGap="8.0" layoutX="203.0" layoutY="290.0" text="Powered by Group 1" textAlignment="CENTER" textFill="#d9250f" underline="true">
+         <effect>
+            <Reflection />
+         </effect>
+      </Label>
+   </children>
+</Pane>
