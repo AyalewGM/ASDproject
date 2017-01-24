@@ -12,7 +12,7 @@
    <children>
       <GridPane alignment="TOP_CENTER" layoutX="121.0" layoutY="137.0" prefHeight="114.0" prefWidth="300.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.0" minWidth="10.0" prefWidth="158.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.0" minWidth="10.0" prefWidth="158.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="96.0" minWidth="2.0" prefWidth="26.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.0" minWidth="10.0" prefWidth="165.0" />
         </columnConstraints>
@@ -22,12 +22,12 @@
           <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="131.0" text="CANCEL" textAlignment="CENTER" textFill="#e80a0a" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="146.0" text="LOGIN" textAlignment="CENTER" textFill="#3ada21" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#handleCancelButtonAction" prefHeight="32.0" prefWidth="131.0" text="CANCEL" textAlignment="CENTER" textFill="#e80a0a" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#handleLoginButtonAction" prefHeight="32.0" prefWidth="146.0" text="LOGIN" textAlignment="CENTER" textFill="#3ada21" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Label text="Username:" />
             <Label text="Password:" GridPane.rowIndex="1" />
-            <TextField prefHeight="30.0" prefWidth="144.0" GridPane.columnIndex="2" />
-            <PasswordField prefHeight="30.0" prefWidth="144.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="username" prefHeight="30.0" prefWidth="144.0" GridPane.columnIndex="2" />
+            <PasswordField fx:id="password" prefHeight="30.0" prefWidth="144.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <ImageView fitHeight="63.0" fitWidth="218.0" layoutX="217.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
