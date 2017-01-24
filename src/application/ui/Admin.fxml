@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane onMouseClicked="#handleSubmit" prefHeight="500.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.ui.AdminController">
+  <!-- TODO Add Nodes -->
+  <children>
+    <TabPane prefHeight="500.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <tabs>
+        <Tab text="Add Member">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <GridPane layoutX="45.0" layoutY="90.0">
+                  <children>
+                    <Label text="First Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label text="Last Name" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label text="Phone Number" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                  </children>
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                </GridPane>
+                <Label layoutX="42.0" layoutY="59.0" text="Personal Details">
+                  <font>
+                    <Font name="System Bold" size="12.0" fx:id="x1" />
+                  </font>
+                </Label>
+                <Label font="$x1" layoutX="45.0" layoutY="213.0" text="Address" />
+                <GridPane layoutX="42.0" layoutY="243.0">
+                  <children>
+                    <Label text="Street Number" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label text="City" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label text="Zip Code" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label text="State" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                  </children>
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                </GridPane>
+                <TextField fx:id="fname" layoutX="145.0" layoutY="97.0" prefWidth="200.0" />
+                <TextField fx:id="lname" layoutX="145.0" layoutY="127.0" prefWidth="200.0" />
+                <TextField fx:id="phoneNum" layoutX="145.0" layoutY="154.0" prefWidth="200.0" />
+                <TextField fx:id="streetNum" layoutX="142.0" layoutY="250.0" prefWidth="200.0" />
+                <TextField fx:id="city" layoutX="143.0" layoutY="280.0" prefWidth="200.0" />
+                <TextField fx:id="zip" layoutX="142.0" layoutY="307.0" prefWidth="200.0" />
+                <TextField fx:id="state" layoutX="145.0" layoutY="334.0" prefWidth="200.0" />
+                <Button layoutX="197.0" layoutY="397.0" mnemonicParsing="false" onMouseClicked="#handleSubmit" prefHeight="35.0" prefWidth="91.0" text="Submit" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Add Book">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="352.0" prefWidth="473.0">
+              <children>
+                <GridPane layoutX="43.0" layoutY="88.0" prefHeight="161.0" prefWidth="318.0">
+                  <children>
+                    <Label text="Title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label text="ISBN" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label text="Borrow Duration" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <ChoiceBox prefHeight="26.0" prefWidth="146.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                      <items>
+                        <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="Item 1" />
+                          <String fx:value="Item 2" />
+                          <String fx:value="Item 3" />
+                        </FXCollections>
+                      </items>
+                    </ChoiceBox>
+                    <Label text="Availability" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <ChoiceBox minHeight="17.999908447265625" prefHeight="26.0" prefWidth="146.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                      <items>
+                        <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="Item 1" />
+                          <String fx:value="Item 2" />
+                          <String fx:value="Item 3" />
+                        </FXCollections>
+                      </items>
+                    </ChoiceBox>
+                    <TextField prefHeight="36.0" prefWidth="159.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField prefHeight="36.0" prefWidth="159.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  </children>
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                </GridPane>
+                <Button layoutX="228.0" layoutY="311.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="95.0" text="Submit" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="View Member Info">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <TableView layoutX="59.0" layoutY="121.0" prefHeight="241.0" prefWidth="298.0">
+                  <columns>
+                    <TableColumn prefWidth="75.0" text="First Name" />
+                    <TableColumn prefWidth="75.0" text="Last Name" />
+                    <TableColumn prefWidth="75.0" text="Street" />
+                  </columns>
+                </TableView>
+                <TextField layoutX="93.0" layoutY="47.0" prefHeight="30.0" prefWidth="200.00009999999747" />
+                <Label layoutX="38.0" layoutY="47.0" prefHeight="30.0" prefWidth="42.0" text="Search" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="View Book Info">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <Label layoutX="87.0" layoutY="57.0" prefHeight="31.0" prefWidth="45.0" text="Search">
+                  <font>
+                    <Font name="System Bold" size="14.0" />
+                  </font>
+                </Label>
+                <TextField layoutX="149.0" layoutY="52.0" prefHeight="41.0" prefWidth="215.0" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+  </children>
+</AnchorPane>
