@@ -13,18 +13,29 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
-public class Main extends Application {
+import java.util.List;
+
+import application.business.*;
+import application.dataaccess.*;
+import application.ui.*;
+
+public class Main extends Application{
+
+	Stage thisStage;
 	
 	@FXML
 	private TextField username;
 	@FXML
 	private TextField password;
-	
 	@Override
 	public void start(Stage primaryStage) {
-
 		System.out.println("Testing Action listener");
 		try {
+			this.thisStage = primaryStage;
+			UserDetails user = new UserDetails("test", "123", "superAdmin");
+			UserObjectInputOutputStream inputOutput = new UserObjectInputOutputStream();
+			inputOutput.addUser(user);
+
 			Pane root = (Pane) FXMLLoader.load(Main.class.getResource("LoginForm.fxml"));
 			Scene scene = new Scene(root, 530, 350);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -37,20 +48,30 @@ public class Main extends Application {
 
 	@FXML
 	private void handleLoginButtonAction() {
-		String uname = username.getText();
-		String upass = password.getText();
-		System.out.println("Username: " + uname + " Pass: " + upass);
-		
-		if(uname.trim().length() == 0 || upass.trim().length() == 0){
+//		String uname = username.getText();
+//		String upass = password.getText();
+		String uname = "test";
+		String upass = "123";
+		UserDetails userObject = new UserDetails(uname, upass, "admin");
+		if (uname.trim().length() == 0 || upass.trim().length() == 0) {
 			alertMessage("Fill all the required Fields");
-		}else if(uname.trim() != "test" && upass.trim() != "123"){
-			alertMessage("Invalid Username or Password");
-		}else{
-			alertMessage("Login Successfull");
+		} else {
+			UserObjectInputOutputStream inputOutput = new UserObjectInputOutputStream();
+			UserDetails user = inputOutput.getUsers(uname, upass);
+			try{
+				if (user.getUsername().equals(null)) {
+					alertMessage("Invalid Username or Password");
+				} else {
+					SuperAdminController sac = new SuperAdminController();
+					sac.loadSuperAdminWindow();
+				}
+			}catch(Exception e){
+				alertMessage("Invalid Username or Password");
+			}
 		}
 	}
-	
-	private void alertMessage(String msg){
+
+	private void alertMessage(String msg) {
 		Alert alert = new Alert(AlertType.WARNING, msg, ButtonType.OK);
 		alert.showAndWait();
 	}

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="900.0" style="-fx-border-color: orange; -fx-border-width: 2px;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ui.SuperAdminController">
+   <children>
+      <TabPane layoutX="10.0" layoutY="151.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="434.0" minWidth="-Infinity" prefHeight="434.0" prefWidth="883.0" style="-fx-border-width: 2px; -fx-border-color: orange;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="151.0">
+        <tabs>
+          <Tab text="System Users">
+            <content>
+              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="406.0" prefWidth="874.0">
+                     <children>
+                        <TableView layoutX="98.0" layoutY="61.0" prefHeight="290.0" prefWidth="678.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="#" />
+                            <TableColumn maxWidth="200.0" prefWidth="200.0" text="Username" />
+                              <TableColumn maxWidth="200.0" prefWidth="200.0" text="Role" />
+                              <TableColumn maxWidth="200.0" prefWidth="200.0" text="Password" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="99.0" layoutY="17.0" text="List of Sysyem Users">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Library Books">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Checkouts">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Audit Trail">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="224.0" prefWidth="619.0" />
+               </content>
+            </Tab>
+            <Tab text="Add Lib Member">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="224.0" prefWidth="619.0">
+                     <children>
+                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="527.0" prefWidth="1176.0">
+                           <children>
+                              <GridPane alignment="CENTER" layoutX="187.0" layoutY="62.0" maxHeight="556.0" minHeight="336.0" prefHeight="417.0" prefWidth="830.0" style="-fx-background-color: #ead493; -fx-background-radius: 8px;" AnchorPane.leftAnchor="187.0" AnchorPane.rightAnchor="183.0" AnchorPane.topAnchor="40.0">
+                                 <children>
+                                    <Label prefHeight="20.0" prefWidth="144.0" text="First Name" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Last Name" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="131.0" text="Phone Number" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Username" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Street" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Role" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="City" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="State" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Password" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Zip" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField maxHeight="45.0" minHeight="45.0" prefHeight="45.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <TextField maxHeight="45.0" minHeight="45.0" prefHeight="45.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <TextField maxHeight="45.0" minHeight="45.0" prefHeight="45.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                    <TextField prefHeight="45.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                    <TextField maxHeight="45.0" minHeight="45.0" prefHeight="45.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <TextField maxHeight="45.0" minHeight="45.0" prefHeight="45.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <TextField maxHeight="45.0" minHeight="45.0" prefHeight="45.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                    <Button maxHeight="47.0" minHeight="47.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="218.0" text="CANCEL" textFill="#c91111" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="47.0" minHeight="47.0" mnemonicParsing="false" onAction="#submitUsersDetails" prefHeight="47.0" prefWidth="218.0" text="SUBMIT" textFill="#318d32" GridPane.columnIndex="5" GridPane.rowIndex="7">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Button>
+                                    <TextField minHeight="45.0" prefHeight="45.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                    <ComboBox maxHeight="45.0" minHeight="45.0" prefHeight="45.0" prefWidth="215.0" promptText="SELECT ROLE" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                    <TextField maxHeight="45.0" minHeight="45.0" prefHeight="45.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                    <Label contentDisplay="CENTER" prefHeight="65.0" prefWidth="255.0" text="Add New User" textAlignment="CENTER" GridPane.columnIndex="2">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.82501220703125" minWidth="10.0" prefWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.82501220703125" minWidth="10.0" prefWidth="132.58505249023438" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="388.854736328125" minWidth="10.0" prefWidth="194.74505615234375" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="377.7747802734375" minWidth="10.0" prefWidth="15.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="403.6147766113281" minWidth="10.0" prefWidth="113.39501953125" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="251.73492431640625" minWidth="10.0" prefWidth="190.29998779296875" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.669921875" minWidth="10.0" prefWidth="10.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="65.0" minHeight="65.0" prefHeight="65.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="View Lib Members">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="224.0" prefWidth="619.0" />
+               </content>
+            </Tab>
+            <Tab text="View System Users">
+               <content>
+                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <ImageView fitHeight="120.0" fitWidth="383.0" layoutX="252.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="391.0" layoutY="589.0" text="Powered by Group 1" textAlignment="CENTER" textFill="#cd2525" AnchorPane.bottomAnchor="25.0">
+         <effect>
+            <Reflection />
+         </effect>
+      </Label>
+      <ImageView fitHeight="90.0" fitWidth="90.0" layoutX="14.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0">
+         <image>
+            <Image url="@../images/logo_mum.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="94.0" layoutY="126.0" prefHeight="16.0" prefWidth="172.0" text="Logged in as Super Admin" textFill="#3e9459" />
+      <Label layoutX="20.0" layoutY="126.0" text="Cleave" textFill="#318d2a" />
+      <Hyperlink layoutX="788.0" layoutY="128.0" prefHeight="24.0" prefWidth="55.0" text="Logout" textAlignment="RIGHT" />
+      <ImageView fitHeight="90.0" fitWidth="100.0" layoutX="753.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/mmy-large.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>
