@@ -37,16 +37,24 @@ public class Main extends Application {
 
 	@FXML
 	private void handleLoginButtonAction() {
-		String uname = username.getText();
-		String upass = password.getText();
-		System.out.println("Username: " + uname + " Pass: " + upass);
-		
-		if(uname.trim().length() == 0 || upass.trim().length() == 0){
+		String uname = "test";
+		String upass = "123";
+		UserDetails userObject = new UserDetails(uname, upass, "admin");
+		if (uname.trim().length() == 0 || upass.trim().length() == 0) {
 			alertMessage("Fill all the required Fields");
-		}else if(uname.trim() != "test" && upass.trim() != "123"){
-			alertMessage("Invalid Username or Password");
-		}else{
-			alertMessage("Login Successfull");
+		} else {
+			UserObjectInputOutputStream inputOutput = new UserObjectInputOutputStream();
+			UserDetails user = inputOutput.getUsers(uname, upass);
+			try{
+				if (user.getUsername().equals(null)) {
+					alertMessage("Invalid Username or Password");
+				} else {
+					SuperAdminController sac = new SuperAdminController();
+					sac.loadSuperAdminWindow();
+				}
+			}catch(Exception e){
+				alertMessage("Invalid Username or Password");
+			}
 		}
 	}
 	
