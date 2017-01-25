@@ -19,7 +19,7 @@ import application.business.Author;
 import application.business.Book;
 import application.business.LibraryMember;
 import application.business.Person;
-
+import application.dataaccess.DataFacade;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -152,8 +152,7 @@ public class AdminController extends Application implements Initializable {
 		Author a1 = new Author("jkajf", "fdafa", "kjkaj", a2, true, "bio");
 
 		int cpn = Integer.parseInt(cp.getText());
-		Book bookEntry;
-		List<Book> booklis = new ArrayList();
+		
 
 		for (int i = 1; i <= cpn; i++) {
 			Book bk = new Book(title.getText(), isbn.getText(), ch3, ch, a1, i);
@@ -162,33 +161,8 @@ public class AdminController extends Application implements Initializable {
 		}
 		// output2.writeObject(books);
 
-		try {
-
-			// Read from the stored file
-			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR2));
-			ObjectInputStream input = new ObjectInputStream(fileInputStream);
-
-			if (input.available() > 0) {
-
-				booklis = (ArrayList) input.readObject();
-				input.close();
-				System.out.println("working");
-				books.addAll(booklis);
-
-				output2.writeObject(books);
-                 System.out.println("Added");
-				output2.close();
-			} else {
-				output2.writeObject(books);
-				output2.close();
-			}
-
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		DataFacade d= new DataFacade();
+		d.saveBook(books);
 
 	}
 
