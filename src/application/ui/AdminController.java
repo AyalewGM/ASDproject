@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.ResourceBundle;
+
+import javax.print.DocFlavor.URL;
 
 import application.business.Address;
 import application.business.LibraryMember;
@@ -13,12 +16,14 @@ import application.business.Person;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class AdminController extends Application {
+public class AdminController extends Application implements Initializable {
 	
 	private List<Person> members;
 	
@@ -36,6 +41,18 @@ public class AdminController extends Application {
 	private TextField state;
 	@FXML
 	private TextField zip;
+	
+	
+	@FXML 
+	private TextField title;
+	@FXML
+	private TextField isbn;
+	
+    @FXML
+    private ComboBox cb;
+    
+    @FXML
+    private ComboBox cb2;
 	
 	public static final String OUTPUT_DIR = System.getProperty("user.dir") 
 			+ "\\src\\application\\dataaccess\\staffInfo.txt";
@@ -72,6 +89,14 @@ public class AdminController extends Application {
 		
 	}
 	
+	public void addBookHandle(){
+		
+		
+	}
+	
+	
+	
+	
 	@Override 
 	
 	public void start(Stage primaryStage){
@@ -93,5 +118,21 @@ public class AdminController extends Application {
 		
 		launch(args);
 	}
+
+	@Override
+	public void initialize(java.net.URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		cb.getItems().removeAll(cb.getItems());
+	    cb.getItems().addAll("7 days", "21 days");
+	    cb.getSelectionModel().select("7 days");
+	    
+	    cb2.getItems().removeAll(cb2.getItems());
+	    cb2.getItems().addAll("Available", "Not Available");
+	    cb2.getSelectionModel().select("Available");
+	    
+	    
+	}
+	
+	
 
 }

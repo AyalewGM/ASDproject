@@ -8,10 +8,21 @@ public class Book implements Serializable {
 	private static final long serialVersionUID = 8309080721495266420L;
 	public String title;
 	public String ISBN;
-	public int bookType;
+	public int borrowDuration;
 	public boolean availability;
-	
-	public List<Author> authors;
+    public Author authors;
+    
 	public List<LibraryMember> members;
+
+	public Book(String title, String iSBN, int borrowDuration, boolean availability, Author authors) {
+		super();
+		this.title = title;
+		ISBN = iSBN;
+		this.borrowDuration = borrowDuration;
+		this.availability = availability;
+		this.authors = authors;
+	}
+	
+	
 	
 }
