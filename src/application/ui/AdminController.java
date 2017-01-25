@@ -123,38 +123,40 @@ public class AdminController extends Application implements Initializable {
 		try{
 		
 		boolean ch,ch2;
-	FileOutputStream fileOutputStream = new FileOutputStream(
+		int ch3;
+	FileOutputStream fileOutputStream2 = new FileOutputStream(
 			OUTPUT_DIR2);
 	
 		
-	if(cb2.getAccessibleText().equals("Available"))
+	if(cb2.getValue().equals("Available"))
 		ch=true;
 		else
 		ch=false;
 		
-	if(cb3.getAccessibleText().equals("Accredited"))
+	if(cb3.getValue().equals("Accredited"))
 		ch2=true;
 	else
 		ch2=false;
 	
+	if(cb.getValue().equals("7 days"))
+		ch3=7;
+	else
+		ch3=21;
 Address a2= new Address(streetNum2.getText(),city2.getText(),state2.getText(),Integer.parseInt(zip2.getText()));
-	Author a1= new Author (fname2.getText(),lname2.getText(),phoneNum2.getText(),a2,ch2,bio.getText());
+Author a1= new Author (fname2.getText(),lname2.getText(),phoneNum2.getText(),a2,ch2,bio.getText());
 			
-	    Book bk= new Book(title.getText(),isbn.getText(),Integer.parseInt(cb.getAccessibleText()),ch,a1);
+	    Book bk= new Book(title.getText(),isbn.getText(),ch3,ch,a1);
 	    
-   ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
-	output.writeObject(bk);
-	output.close();
+   ObjectOutputStream output2 = new ObjectOutputStream(fileOutputStream2);
+	output2.writeObject(bk);
+	output2.close();
 			} catch (FileNotFoundException e) {
 			e.printStackTrace();
 	} catch (IOException e) {
 			e.printStackTrace();}
 		
-		System.out.println("handled");
+		
 	}
-	
-	
-	
 	
 	@Override 
 	
