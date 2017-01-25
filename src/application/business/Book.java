@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Book implements Serializable {
 	
-	private static final long serialVersionUID = 8309080721495266420L;
+	private static final long serialVersionUID = 721495266420L;
 	public String title;
 	public String ISBN;
 	public int borrowDuration;

@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
 import javax.print.DocFlavor.URL;
 
 import application.business.Address;
+import application.business.Author;
+import application.business.Book;
 import application.business.LibraryMember;
 import application.business.Person;
 
@@ -48,14 +50,39 @@ public class AdminController extends Application implements Initializable {
 	@FXML
 	private TextField isbn;
 	
+	@FXML
+	private TextField auth;
+	
     @FXML
-    private ComboBox cb;
+    private ComboBox<String> cb;
     
     @FXML
-    private ComboBox cb2;
+    private ComboBox<String> cb2;
+    
+	@FXML
+	private TextField fname2;
+	@FXML
+	private TextField lname2;
+	@FXML
+	private TextField phoneNum2;
+	@FXML
+	private TextField streetNum2;
+	@FXML
+	private TextField city2;
+	@FXML
+	private TextField state2;
+	@FXML
+	private TextField zip2;
+	@FXML
+	private ComboBox<String> cb3;
+	
+	@FXML
+	private TextField bio;
 	
 	public static final String OUTPUT_DIR = System.getProperty("user.dir") 
 			+ "\\src\\application\\dataaccess\\staffInfo.txt";
+	public static final String OUTPUT_DIR2 = System.getProperty("user.dir") 
+			+ "\\src\\application\\dataaccess\\bookInfo.txt";
 	
 	@FXML
 	private void handleSubmit(){
@@ -89,9 +116,41 @@ public class AdminController extends Application implements Initializable {
 		
 	}
 	
+	@FXML
 	public void addBookHandle(){
 		
 		
+		try{
+		
+		boolean ch,ch2;
+	FileOutputStream fileOutputStream = new FileOutputStream(
+			OUTPUT_DIR2);
+	
+		
+	if(cb2.getAccessibleText().equals("Available"))
+		ch=true;
+		else
+		ch=false;
+		
+	if(cb3.getAccessibleText().equals("Accredited"))
+		ch2=true;
+	else
+		ch2=false;
+	
+Address a2= new Address(streetNum2.getText(),city2.getText(),state2.getText(),Integer.parseInt(zip2.getText()));
+	Author a1= new Author (fname2.getText(),lname2.getText(),phoneNum2.getText(),a2,ch2,bio.getText());
+			
+	    Book bk= new Book(title.getText(),isbn.getText(),Integer.parseInt(cb.getAccessibleText()),ch,a1);
+	    
+   ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
+	output.writeObject(bk);
+	output.close();
+			} catch (FileNotFoundException e) {
+			e.printStackTrace();
+	} catch (IOException e) {
+			e.printStackTrace();}
+		
+		System.out.println("handled");
 	}
 	
 	
@@ -130,7 +189,9 @@ public class AdminController extends Application implements Initializable {
 	    cb2.getItems().addAll("Available", "Not Available");
 	    cb2.getSelectionModel().select("Available");
 	    
-	    
+	    cb3.getItems().removeAll(cb3.getItems());
+	    cb3.getItems().addAll("Accredited", "Not Accredited");
+	    cb3.getSelectionModel().select("Accredited");
 	}
 	
 	
