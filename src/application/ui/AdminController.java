@@ -32,7 +32,7 @@ import javafx.stage.Stage;
 
 public class AdminController extends Application implements Initializable {
 
-	private List<Person> members;
+	private List<Person> members=new ArrayList();
 	private ArrayList<Book> books = new ArrayList();
 
 	@FXML
@@ -85,6 +85,9 @@ public class AdminController extends Application implements Initializable {
 
 	@FXML
 	private TextField bio;
+	
+	@FXML
+	private TextField sm;
 
 	public static final String OUTPUT_DIR = System.getProperty("user.dir")
 			+ "\\src\\application\\dataaccess\\staffInfo.txt";
@@ -92,7 +95,7 @@ public class AdminController extends Application implements Initializable {
 			+ "\\src\\application\\dataaccess\\bookInfo.txt";
 
 	@FXML
-	private void handleSubmit() {
+	private void handleSubmit() throws ClassNotFoundException, IOException {
 
 		String fn = fname.getText();
 		String ln = lname.getText();
@@ -101,23 +104,13 @@ public class AdminController extends Application implements Initializable {
 		String ct = city.getText();
 		String st = state.getText();
 		int zp = Integer.parseInt(zip.getText());
-
-		try {
-
-			// Store Serialized User Object in File
-			FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR);
+		
 			Address ad = new Address(sn, ct, st, zp);
 			Person p = new LibraryMember(fn, ln, pn, ad, LibraryMember.getMemberId());
-			ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
-			output.writeObject(p);
-
-			output.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			
+        DataFacade pd= new DataFacade();
+        pd.saveLibraryMember(p);
+		
 
 	}
 
@@ -126,9 +119,6 @@ public class AdminController extends Application implements Initializable {
 
 		boolean ch, ch2;
 		int ch3;
-		FileOutputStream fileOutputStream2 = new FileOutputStream(OUTPUT_DIR2);
-		ObjectOutputStream output2 = new ObjectOutputStream(fileOutputStream2);
-
 		if (cb2.getValue().equals("Available"))
 			ch = true;
 		else
@@ -204,13 +194,5 @@ public class AdminController extends Application implements Initializable {
 		cb3.getSelectionModel().select("Accredited");
 	}
 
-	class NoHeaderObjectOutputStream extends ObjectOutputStream {
-		public NoHeaderObjectOutputStream(OutputStream os) throws IOException {
-			super(os);
-		}
-
-		protected void writeStreamHeader() {
-		}
-	}
 
 }
