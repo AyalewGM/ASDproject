@@ -17,5 +17,31 @@ public class Author extends Person {
 	public void addBooks(Book b){
 		
 	}
+
+	public boolean isCredentials() {
+		return credentials;
+	}
+
+	public void setCredentials(boolean credentials) {
+		this.credentials = credentials;
+	}
+
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+
+	public List<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(List<Book> books) {
+		this.books = books;
+	}
+	
+	
 	
 }

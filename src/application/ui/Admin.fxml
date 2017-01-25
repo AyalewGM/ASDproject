@@ -166,6 +166,8 @@
                 </ComboBox>
                 <Label layoutX="362.0" layoutY="389.0" text="Bio" />
                 <TextField fx:id="bio" layoutX="427.0" layoutY="386.0" prefWidth="159.0" />
+                <Label layoutX="43.0" layoutY="269.0" text="Number of Copies" />
+                <TextField fx:id="cp" layoutX="151.0" layoutY="263.0" prefHeight="25.0" prefWidth="172.0" />
               </children>
             </AnchorPane>
           </content>

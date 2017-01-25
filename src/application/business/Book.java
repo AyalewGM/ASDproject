@@ -11,16 +11,66 @@ public class Book implements Serializable {
 	public int borrowDuration;
 	public boolean availability;
     public Author authors;
+    public int copyNum;
     
 	public List<LibraryMember> members;
 
-	public Book(String title, String iSBN, int borrowDuration, boolean availability, Author authors) {
+	public Book(String title, String iSBN, int borrowDuration, boolean availability, Author authors, int copyNum) {
 		super();
 		this.title = title;
 		ISBN = iSBN;
 		this.borrowDuration = borrowDuration;
 		this.availability = availability;
 		this.authors = authors;
+		this.copyNum=copyNum;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getISBN() {
+		return ISBN;
+	}
+
+	public void setISBN(String iSBN) {
+		ISBN = iSBN;
+	}
+
+	public int getBorrowDuration() {
+		return borrowDuration;
+	}
+
+	public void setBorrowDuration(int borrowDuration) {
+		this.borrowDuration = borrowDuration;
+	}
+
+	public boolean isAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(boolean availability) {
+		this.availability = availability;
+	}
+
+	public Author getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(Author authors) {
+		this.authors = authors;
+	}
+
+	public int getCopyNum() {
+		return copyNum;
+	}
+
+	public void setCopyNum(int copyNum) {
+		this.copyNum = copyNum;
 	}
 	
 	
