@@ -317,7 +317,22 @@ public class AdminController extends Application implements Initializable {
 	}
 	
 	@FXML
-	public void addMoreBookCopies() throws IOException, ClassNotFoundException {
-		System.out.println("Testing here!!");
+	public void addMoreBookCopies(){
+		try{
+			int extraCopies = Integer.valueOf(this.extraCopies.getText());
+			String ISBN_ = this.searchField.getText();
+			
+			if(ISBN_.length() != 0){
+				System.out.println("Testing here!! ===== " + extraCopies);
+				System.out.println("ISBN ===== " + ISBN_);
+			}else{
+				System.out.println("Enter the right ISBN! ");
+			}
+			
+			
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		}
+		
 	}
 }
