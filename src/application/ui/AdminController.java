@@ -17,6 +17,7 @@ import javax.print.DocFlavor.URL;
 import application.business.Address;
 import application.business.Author;
 import application.business.Book;
+import application.business.CopyBook;
 import application.business.LibraryMember;
 import application.business.Person;
 import application.dataaccess.DataFacade;
@@ -26,6 +27,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -34,6 +36,7 @@ public class AdminController extends Application implements Initializable {
 
 	private List<Person> members=new ArrayList();
 	private ArrayList<Book> books = new ArrayList();
+	private ArrayList<CopyBook> copies = new ArrayList();
 
 	@FXML
 	private TextField fname;
@@ -87,7 +90,9 @@ public class AdminController extends Application implements Initializable {
 	private TextField bio;
 	
 	@FXML
-	private TextField sm;
+	private Button sm;
+	@FXML
+	private TextField st;
 
 	public static final String OUTPUT_DIR = System.getProperty("user.dir")
 			+ "\\src\\application\\dataaccess\\staffInfo.txt";
@@ -106,7 +111,7 @@ public class AdminController extends Application implements Initializable {
 		int zp = Integer.parseInt(zip.getText());
 		
 			Address ad = new Address(sn, ct, st, zp);
-			Person p = new LibraryMember(fn, ln, pn, ad, LibraryMember.getMemberId());
+			Person p = new LibraryMember(fn, ln, pn, ad, LibraryMember.memberId);
 			
         DataFacade pd= new DataFacade();
         pd.saveLibraryMember(p);
@@ -143,17 +148,28 @@ public class AdminController extends Application implements Initializable {
 
 		int cpn = Integer.parseInt(cp.getText());
 		
-
-		for (int i = 1; i <= cpn; i++) {
-			Book bk = new Book(title.getText(), isbn.getText(), ch3, ch, a1, i);
+		Book bk = new Book(title.getText(), isbn.getText(), ch3, ch, a1, cpn);
+		
+		for(int i=1;i<=cpn;i++){
+			CopyBook cp= new CopyBook(i,bk);
+			copies.add(cp);
+		}
 
 			books.add(bk);
-		}
+		
 		// output2.writeObject(books);
 
 		DataFacade d= new DataFacade();
 		d.saveBook(books);
+		d.saveCopyBook(copies);
 
+	}
+	
+	@FXML
+	public void searchHandle() throws NumberFormatException, ClassNotFoundException, IOException{
+		DataFacade d3= new DataFacade();
+		System.out.println(LibraryMember.memberId);
+		//System.out.println(d3.findMemberById(Integer.parseInt(st.getText())).firstName);
 	}
 
 	@Override

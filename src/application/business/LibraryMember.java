@@ -3,7 +3,7 @@ package application.business;
 import java.util.List;
 
 public class LibraryMember extends Person{
-	private static int memberId=1;
+	public static int memberId=1;
 	private List<Book> books;
 	
 	

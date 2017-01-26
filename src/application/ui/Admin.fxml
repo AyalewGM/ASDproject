@@ -193,12 +193,13 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Label layoutX="87.0" layoutY="57.0" prefHeight="31.0" prefWidth="45.0" text="Search">
+                <Label layoutX="39.0" layoutY="57.0" prefHeight="31.0" prefWidth="133.0" text="Enter Member ID">
                   <font>
                     <Font name="System Bold" size="14.0" />
                   </font>
                 </Label>
-                <TextField layoutX="149.0" layoutY="52.0" prefHeight="41.0" prefWidth="215.0" />
+                <TextField id="memid" fx:id="st" layoutX="172.0" layoutY="52.0" prefHeight="41.0" prefWidth="215.0" />
+                <Button fx:id="sm" layoutX="199.0" layoutY="122.0" mnemonicParsing="false" onMouseClicked="#searchHandle" prefHeight="31.0" prefWidth="85.0" text="Search" />
               </children>
             </AnchorPane>
           </content>
