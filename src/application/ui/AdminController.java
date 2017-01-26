@@ -101,7 +101,7 @@ public class AdminController extends Application implements Initializable {
 		int zp = Integer.parseInt(zip.getText());
 		
 			Address ad = new Address(sn, ct, st, zp);
-			LibraryMember lm = new LibraryMember(fn, ln, pn, ad, LibraryMember.memberId);
+			LibraryMember lm = new LibraryMember(fn, ln, pn, ad);
 			
        // DataFacade pd= new DataFacade();
        DataFacade.saveLibraryMember(lm);
@@ -154,19 +154,23 @@ public class AdminController extends Application implements Initializable {
 		fname.setText("");
 		lname.setText("");
 		phoneNum.setText("");
-		streetNum.setText("");
-		city.setText("");
-		state.setText("");
-		zip.setText("");
+		streetNum2.setText("");
+		city2.setText("");
+		state2.setText("");
+		zip2.setText("");
 		title.setText("");
 		isbn.setText("");
 		bio.setText("");
 		cp.setText("");
+		
+		fname2.setText("");
+		lname2.setText("");
+		phoneNum2.setText("");
 	}
 	
 	@FXML
 	public void memberSearchHandle() throws NumberFormatException, ClassNotFoundException, IOException{
-		LibraryMember lb = DataFacade.findMemberByDetails(memberSearchTf.getText());
+		LibraryMember lb = DataFacade.findMemberByName(memberSearchTf.getText());
 	}
 	
 	private void alertMessage(String msg) {
@@ -282,12 +286,15 @@ public class AdminController extends Application implements Initializable {
 	private TextField memberSearchTf;
 	
 	@FXML
+	private TextField extraCopies;
+	
+	@FXML
 	public void searchBookHandle() throws IOException, ClassNotFoundException {
 		
 		String ISBN = this.searchField.getText();
 		//DataFacade dataFacade = new DataFacade();
 		
-		Book bookDetails = DataFacade.findBookByTitle(ISBN);
+		Book bookDetails = DataFacade.findBookByISBN(ISBN);
 		try{
 			bookTitle.setText(bookDetails.getTitle());
 			bookISBN.setText(bookDetails.getISBN());
@@ -307,5 +314,10 @@ public class AdminController extends Application implements Initializable {
 		}catch(Exception e){
 			alertMessage("Invalid ISBN entered!! Enter a valid one.");
 		}
+	}
+	
+	@FXML
+	public void addMoreBookCopies() throws IOException, ClassNotFoundException {
+		System.out.println("Testing here!!");
 	}
 }

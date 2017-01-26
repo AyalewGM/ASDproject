@@ -10,7 +10,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleSubmit" prefHeight="650.0" prefWidth="900.0" style="-fx-border-color: #efebe6; -fx-border-width: 5px;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.ui.AdminController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleSubmit" prefHeight="650.0" prefWidth="900.0" style="-fx-border-color: #efebe6; -fx-border-width: 5px;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ui.AdminController">
   <!-- TODO Add Nodes -->
   <children>
     <TabPane prefHeight="507.0" prefWidth="870.0" style="-fx-border-color: orange; -fx-border-width: 3px;;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="140.0">
@@ -19,13 +19,13 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="436.0" prefWidth="864.0">
               <children>
-                <Label layoutX="244.0" layoutY="15.0" prefHeight="31.0" prefWidth="136.0" text="Search for a book">
+                <Label layoutX="205.0" layoutY="15.0" prefHeight="31.0" prefWidth="136.0" text="Search for a book">
                   <font>
                     <Font name="System Bold" size="14.0" fx:id="x4" />
                   </font>
                 </Label>
-                <TextField fx:id="searchField" layoutX="392.0" layoutY="17.0" onAction="#searchBookHandle" prefHeight="31.0" prefWidth="215.0" promptText="Book Title" />
-                <GridPane layoutX="143.0" layoutY="65.0" prefHeight="315.0" prefWidth="581.0" style="-fx-background-color: #dddad7; -fx-border-radius: 8px;">
+                <TextField fx:id="searchField" layoutX="355.0" layoutY="17.0" onAction="#searchBookHandle" prefHeight="31.0" prefWidth="215.0" promptText="ISBN" />
+                <GridPane layoutX="71.0" layoutY="65.0" prefHeight="315.0" prefWidth="581.0" style="-fx-background-color: #dddad7; -fx-border-radius: 8px;">
                   <children>
                     <Label text="Title" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Label text="ISBN" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -81,6 +81,9 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                 </GridPane>
+                        <Button layoutX="713.0" layoutY="159.0" mnemonicParsing="false" onAction="#addMoreBookCopies" prefHeight="36.0" prefWidth="110.0" style="-fx-border-color: green;" text="ADD" />
+                        <TextField fx:id="extraCopies" layoutX="713.0" layoutY="115.0" prefHeight="31.0" prefWidth="109.0" promptText="#  Copies" style="-fx-border-color: red;" />
+                        <Label layoutX="695.0" layoutY="72.0" prefHeight="25.0" prefWidth="147.0" text="Add More Copies Here!!" textFill="#f23a0c" />
               </children>
             </AnchorPane>
           </content>
