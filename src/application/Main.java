@@ -56,7 +56,7 @@ public class Main extends Application{
 	private void handleLoginButtonAction() {
 //		String uname = username.getText();
 //		String upass = password.getText();
-		String uname = "admin";
+		String uname = "lib";
 		String upass = "123";
 		if (uname.trim().length() == 0 || upass.trim().length() == 0) {
 			alertMessage("Fill all the required Fields");
@@ -69,12 +69,14 @@ public class Main extends Application{
 				} else {
 					switch(user.getRole()){
 						case "admin":
+							
 							AdminController sac = new AdminController();
 							sac.loadAdminWindow();
 							break;
 						case "librarian":
-							this.alertMessage("Liabrarian window coming soon");
-							System.out.println("Liabrarian Window coming soon");
+							
+							LibrarianController libc = new LibrarianController();
+							libc.loadAdminWindow();
 							break;
 						default: 
 							break;
@@ -82,7 +84,8 @@ public class Main extends Application{
 					
 				}
 			}catch(Exception e){
-				alertMessage("Invalid Username or Password");
+				e.printStackTrace();
+				alertMessage("======Invalid Username or Password");
 			}
 		}
 	}

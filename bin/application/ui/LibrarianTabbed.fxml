@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ui.LibrarianController">
+   <children>
+      <AnchorPane layoutX="-4.0" layoutY="122.0">
+         <children>
+            <TabPane id="tbcheckout" layoutX="7.0" prefHeight="382.0" prefWidth="698.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab fx:id="tbCheckout" text="Checkout">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="314.0" prefWidth="606.0">
+                           <children>
+                              <Button id="btnCancel" layoutX="361.0" layoutY="273.0" mnemonicParsing="false" onMouseClicked="#cancelHandler" prefHeight="37.0" prefWidth="133.0" text="Cancel" />
+                              <Button id="btnCheckout" layoutX="142.0" layoutY="273.0" mnemonicParsing="false" onMouseClicked="#checkoutHandler" prefHeight="37.0" prefWidth="133.0" text="Checkout" />
+                              <GridPane layoutX="59.0" layoutY="38.0" prefHeight="161.0" prefWidth="581.0" AnchorPane.bottomAnchor="154.0" AnchorPane.leftAnchor="59.0" AnchorPane.rightAnchor="58.0" AnchorPane.topAnchor="38.0">
+                                 <children>
+                                    <Label alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="142.0" text="Member ID">
+                                       <font>
+                                          <Font name="DejaVu Serif Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="138.0" text="ISBN" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font name="DejaVu Serif Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="44.0" prefWidth="137.0" text="Due Date" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font name="DejaVu Serif Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField id="txtMemberId" fx:id="txtMemberId" onAction="#checkoutHandler" prefHeight="30.0" prefWidth="196.0" GridPane.columnIndex="2" />
+                                    <TextField id="tstISBN" fx:id="txtISBN" onAction="#checkoutHandler" prefHeight="30.0" prefWidth="196.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <TextField id="dueDate" fx:id="txtdueDate" editable="false" onAction="#checkoutHandler" prefHeight="30.0" prefWidth="196.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="170.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.0" minWidth="10.0" prefWidth="53.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="405.0" minWidth="10.0" prefWidth="405.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab fx:id="tbView" text="View">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tableView" layoutX="14.0" layoutY="14.0" prefHeight="353.0" prefWidth="698.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                  <TableColumn id="colMemberId" fx:id="colMemberId" prefWidth="75.0" text="Member ID" />
+                                  <TableColumn fx:id="colBookISBN" prefWidth="75.0" text="Book ISBN" />
+                                    <TableColumn fx:id="colBookTitle" prefWidth="271.0" text="Book Title" />
+                                    <TableColumn fx:id="colCheckoutDate" minWidth="0.0" prefWidth="100.0" text="Checkout Date" />
+                                    <TableColumn fx:id="colDueDate" minWidth="0.0" prefWidth="100.0" text="dueDate" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab fx:id="tbSomething" text="Something Else ">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="114.0" fitWidth="200.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logo_mum.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="81.0" fitWidth="300.0" layoutX="250.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logo.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>

@@ -1,60 +1,32 @@
 package application.business;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
 
-public class CheckoutRecord {
+public class CheckoutRecord implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private LibraryMember recordMember;
-	private Book bk;
-	public Date dateOfCheckout;
-	public Date dueDate;
-	
-	public List<Book> books=new ArrayList<Book>();
-
-	public CheckoutRecord(LibraryMember recordMember, Book bk, Date dateOfCheckout, Date dueDate) {
-		super();
+	public List<CheckoutEntries> checkoutEntries;
+	public CheckoutRecord(LibraryMember recordMember) {
 		this.recordMember = recordMember;
-		books.add(bk);
-		this.dateOfCheckout = dateOfCheckout;
-		this.dueDate = dueDate;
+		//this.checkoutEntries = checkoutEntries;
 	}
-	
-	public void addBooks(Book b){
-		this.books.add(b);
-	}
-
 	public LibraryMember getRecordMember() {
 		return recordMember;
 	}
-
 	public void setRecordMember(LibraryMember recordMember) {
 		this.recordMember = recordMember;
 	}
-
-	public Book getBk() {
-		return bk;
+	public List<CheckoutEntries> getCheckoutEntries() {
+		return checkoutEntries;
 	}
-
-	public void setBk(Book bk) {
-		this.bk = bk;
+	public void setCheckoutEntries(List<CheckoutEntries> checkoutEntries) {
+		this.checkoutEntries = checkoutEntries;
 	}
-
-	public Date getDateOfCheckout() {
-		return dateOfCheckout;
-	}
-
-	public void setDateOfCheckout(Date dateOfCheckout) {
-		this.dateOfCheckout = dateOfCheckout;
-	}
-
-	public Date getDueDate() {
-		return dueDate;
-	}
-
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
+	
 	
 	
 }
