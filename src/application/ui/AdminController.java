@@ -26,8 +26,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class AdminController extends Application implements Initializable {
@@ -85,7 +90,7 @@ public class AdminController extends Application implements Initializable {
 
 	@FXML
 	private TextField bio;
-
+	
 	public static final String OUTPUT_DIR = System.getProperty("user.dir")
 			+ "\\src\\application\\dataaccess\\staffInfo.txt";
 	public static final String OUTPUT_DIR2 = System.getProperty("user.dir")
@@ -143,10 +148,6 @@ public class AdminController extends Application implements Initializable {
 			ch3 = 7;
 		else
 			ch3 = 21;
-		// Address a2= new
-		// Address(streetNum2.getText(),city2.getText(),state2.getText(),Integer.parseInt(zip2.getText()));
-		// Author a1= new Author
-		// (fname2.getText(),lname2.getText(),phoneNum2.getText(),a2,ch2,bio.getText());
 
 		Address a2 = new Address("343", "faf", "afa", 34);
 		Author a1 = new Author("jkajf", "fdafa", "kjkaj", a2, true, "bio");
@@ -155,15 +156,22 @@ public class AdminController extends Application implements Initializable {
 		
 
 		for (int i = 1; i <= cpn; i++) {
-			Book bk = new Book(title.getText(), isbn.getText(), ch3, ch, a1, i);
+			Book bk = new Book(title.getText(), isbn.getText(), ch3, ch, a1, i, cpn);
 
 			books.add(bk);
 		}
-		// output2.writeObject(books);
 
 		DataFacade d= new DataFacade();
 		d.saveBook(books);
+		alertMessage("Book added Successfully");
+		clearNewBookForm();
 
+	}
+	
+	
+	private void alertMessage(String msg) {
+		Alert alert = new Alert(AlertType.INFORMATION, msg, ButtonType.OK);
+		alert.showAndWait();
 	}
 
 	@Override
@@ -180,13 +188,11 @@ public class AdminController extends Application implements Initializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public static void main(String[] args) {
-
-		launch(args);
-	}
+//	public static void main(String[] args) {
+//		launch(args);
+//	}
 
 	@Override
 	public void initialize(java.net.URL location, ResourceBundle resources) {
@@ -212,5 +218,114 @@ public class AdminController extends Application implements Initializable {
 		protected void writeStreamHeader() {
 		}
 	}
-
+	
+	public void loadAdminWindow(){
+		Pane root;
+		try {
+			root = (Pane) FXMLLoader.load(SuperAdminController.class.getResource("Admin.fxml"));
+			Scene adminScene = new Scene(root);
+			Stage newStage = new Stage();
+			newStage.setScene(adminScene);
+			newStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void clearNewBookForm(){
+		searchField.setText("");
+		bookTitle.setText("");
+		bookISBN.setText("");
+		bookCopies.setText("");
+		bDuration.setText("");
+		bAvailability.setText("");
+		fname21.setText("");
+		lname21.setText("");
+		phoneNum21.setText("");
+		streetNum21.setText("");
+		city21.setText("");
+		state21.setText("");
+		zip21.setText("");
+		cp1.setText("");
+		bio1.setText("");
+		cr21.setText("");
+	}
+	@FXML
+	public void clearSearchBookForm(){
+		searchField.setText("");
+		bookTitle.setText("");
+		bookISBN.setText("");
+		bookCopies.setText("");
+		bDuration.setText("");
+		bAvailability.setText("");
+		fname21.setText("");
+		lname21.setText("");
+		phoneNum21.setText("");
+		streetNum21.setText("");
+		city21.setText("");
+		state21.setText("");
+		zip21.setText("");
+		cp1.setText("");
+		bio1.setText("");
+		cr21.setText("");
+	}
+	
+	@FXML
+	private TextField searchField;
+	@FXML
+	private TextField bookTitle;
+	@FXML
+	private TextField bookISBN;
+	@FXML
+	private TextField bookCopies;
+	@FXML
+	private TextField bDuration;
+	@FXML
+	private TextField bAvailability;
+	@FXML
+	private TextField fname21;
+	@FXML
+	private TextField lname21;
+	@FXML
+	private TextField phoneNum21;
+	@FXML
+	private TextField streetNum21;
+	@FXML
+	private TextField city21;
+	@FXML
+	private TextField state21;
+	@FXML
+	private TextField zip21;
+	@FXML
+	private TextField cp1;
+	@FXML
+	private TextField bio1;
+	@FXML
+	private TextField cr21;
+	
+	@FXML
+	public void searchBookHandle() throws IOException {
+		
+		String ISBN = this.searchField.getText();
+		DataFacade dataFacade = new DataFacade();
+		
+		Book bookDetails = dataFacade.findBookBySBN(ISBN);
+		
+		bookTitle.setText(bookDetails.getTitle());
+		bookISBN.setText(bookDetails.getISBN());
+		bookCopies.setText(Integer.toString(bookDetails.getnumCopies()));
+		bDuration.setText(Integer.toString(bookDetails.getBorrowDuration()));
+		bAvailability.setText(Boolean.toString(bookDetails.isAvailability()));
+		
+		fname21.setText(bookDetails.authors.getFirstName());
+		lname21.setText(bookDetails.authors.getLastName());
+		phoneNum21.setText(bookDetails.authors.getPhoneNumber());
+		streetNum21.setText(bookDetails.authors.getAddress().getStreet());
+		city21.setText(bookDetails.authors.getAddress().getCity());
+		state21.setText(bookDetails.authors.getAddress().getState());
+		zip21.setText(Integer.toString(bookDetails.authors.getAddress().getZip()));
+		bio1.setText(bookDetails.authors.getBio());
+		cr21.setText(Boolean.toString(bookDetails.authors.isCredentials()));
+		
+	}
 }

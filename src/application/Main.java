@@ -9,11 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-
-import java.util.List;
 
 import application.business.*;
 import application.dataaccess.*;
@@ -32,7 +29,7 @@ public class Main extends Application{
 		System.out.println("Testing Action listener");
 		try {
 			this.thisStage = primaryStage;
-			UserDetails user = new UserDetails("test", "123", "superAdmin");
+			UserDetails user = new UserDetails("test", "123", "admin");
 			UserObjectInputOutputStream inputOutput = new UserObjectInputOutputStream();
 			inputOutput.addUser(user);
 
@@ -61,6 +58,9 @@ public class Main extends Application{
 			try{
 				if (user.getUsername().equals(null)) {
 					alertMessage("Invalid Username or Password");
+				}else if(user.getRole().equals("admin")){
+					AdminController admin = new AdminController();
+					admin.loadAdminWindow();
 				} else {
 					SuperAdminController sac = new SuperAdminController();
 					sac.loadSuperAdminWindow();
