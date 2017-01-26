@@ -13,6 +13,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import application.business.*;
@@ -32,9 +33,14 @@ public class Main extends Application{
 		System.out.println("Testing Action listener");
 		try {
 			this.thisStage = primaryStage;
-			UserDetails user = new UserDetails("test", "123", "admin");
+			UserDetails user = new UserDetails("admin", "123", "admin");
+			UserDetails user2 = new UserDetails("lib", "123", "librarian");
 			UserObjectInputOutputStream inputOutput = new UserObjectInputOutputStream();
-			inputOutput.addUser(user);
+			
+			List<UserDetails> users = new ArrayList<UserDetails>();
+			users.add(user);
+			users.add(user2);
+			inputOutput.addUser(users);
 
 			Pane root = (Pane) FXMLLoader.load(Main.class.getResource("LoginForm.fxml"));
 			Scene scene = new Scene(root, 530, 350);
@@ -50,9 +56,8 @@ public class Main extends Application{
 	private void handleLoginButtonAction() {
 //		String uname = username.getText();
 //		String upass = password.getText();
-		String uname = "test";
+		String uname = "admin";
 		String upass = "123";
-		UserDetails userObject = new UserDetails(uname, upass, "admin");
 		if (uname.trim().length() == 0 || upass.trim().length() == 0) {
 			alertMessage("Fill all the required Fields");
 		} else {
@@ -62,8 +67,19 @@ public class Main extends Application{
 				if (user.getUsername().equals(null)) {
 					alertMessage("Invalid Username or Password");
 				} else {
-					AdminController sac = new AdminController();
-					sac.loadAdminWindow();
+					switch(user.getRole()){
+						case "admin":
+							AdminController sac = new AdminController();
+							sac.loadAdminWindow();
+							break;
+						case "librarian":
+							this.alertMessage("Liabrarian window coming soon");
+							System.out.println("Liabrarian Window coming soon");
+							break;
+						default: 
+							break;
+					}
+					
 				}
 			}catch(Exception e){
 				alertMessage("Invalid Username or Password");

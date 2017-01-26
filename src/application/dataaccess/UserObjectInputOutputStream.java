@@ -17,16 +17,15 @@ public class UserObjectInputOutputStream{
 	public static final String OUTPUT_DIR = System.getProperty("user.dir") 
 			+ "//src//application//dataaccess//storage//user.txt";
 	
-	public void addUser(UserDetails user) throws ClassNotFoundException{
+	public void addUser(List<UserDetails> users) throws ClassNotFoundException{
 		try {
 			// Store Serialized User Object in File
 			FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR);
 			ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
-			
-			List<UserDetails> list = new ArrayList();
-			list.add(user);
+//			List<UserDetails> list = new ArrayList();
+//			list.add(user);
 
-			output.writeObject(list);
+			output.writeObject(users);
 			output.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -67,9 +66,7 @@ public class UserObjectInputOutputStream{
 					System.out.println("Invalid credentials");
 				}
 			}
-			
 			input.close();
-			
 			return obj;
 			
 		} catch (FileNotFoundException e) {

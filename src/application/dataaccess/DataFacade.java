@@ -16,48 +16,44 @@ import application.business.LibraryMember;
 import application.business.UserDetails;
 import application.business.Person;
 
-
-
-
 public class DataFacade {
-	
+
 	public static final String OUTPUT_DIR = System.getProperty("user.dir")
 			+ "//src//application//dataaccess//staffInfo.txt";
-	
+
 	public static final String OUTPUT_DIR2 = System.getProperty("user.dir")
 			+ "//src//application//dataaccess//bookInfo.txt";
-	
+
 	public static final String OUTPUT_DIR3 = System.getProperty("user.dir")
 			+ "//src//application//dataaccess//copyBookInfo.txt";
-	//private ArrayList<Book> books = new ArrayList();
-	
-	public void saveLibraryMember(Person p) throws IOException, ClassNotFoundException{
-	
-		ArrayList<LibraryMember> memb=new ArrayList();
-		memb.add((LibraryMember)p);
-		
+	// private ArrayList<Book> books = new ArrayList();
+
+	public void saveLibraryMember(Person p) throws IOException, ClassNotFoundException {
+
+		ArrayList<LibraryMember> memb = new ArrayList();
+		memb.add((LibraryMember) p);
+
 		FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR);
 		ObjectOutputStream output1 = new ObjectOutputStream(fileOutputStream);
-		
+
 		try {
-			
+
 			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR));
 			ObjectInputStream input2 = new ObjectInputStream(fileInputStream);
-		
-		if (input2.available() > 0) {
 
-			memb.addAll((ArrayList) input2.readObject());
-			input2.close();
-			System.out.println("working");
-			
+			if (input2.available() > 0) {
 
-			output1.writeObject(memb);
-             System.out.println("Added");
-			output1.close();
-		} else {
-			output1.writeObject(memb);
-			output1.close();
-		}
+				memb.addAll((ArrayList) input2.readObject());
+				input2.close();
+				System.out.println("working");
+
+				output1.writeObject(memb);
+				System.out.println("Added");
+				output1.close();
+			} else {
+				output1.writeObject(memb);
+				output1.close();
+			}
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -66,16 +62,14 @@ public class DataFacade {
 		}
 
 	}
-	
-	
-	
-	public  void  saveBook(ArrayList<Book> books) throws IOException{
-		
+
+	public void saveBook(ArrayList<Book> books) throws IOException {
+
 		FileOutputStream fileOutputStream2 = new FileOutputStream(OUTPUT_DIR2);
 		ObjectOutputStream output2 = new ObjectOutputStream(fileOutputStream2);
-		
-		ArrayList<Book> booklis= new ArrayList();
-		
+
+		ArrayList<Book> booklis = new ArrayList();
+
 		try {
 			// Read from the stored file
 			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR2));
@@ -89,7 +83,7 @@ public class DataFacade {
 				books.addAll(booklis);
 
 				output2.writeObject(books);
-                 System.out.println("Added");
+				System.out.println("Added");
 				output2.close();
 			} else {
 				output2.writeObject(books);
@@ -103,15 +97,14 @@ public class DataFacade {
 			e.printStackTrace();
 		}
 	}
-	
-public  void  saveCopyBook(ArrayList<CopyBook> cps) throws IOException{
-		
-		
+
+	public void saveCopyBook(ArrayList<CopyBook> cps) throws IOException {
+
 		FileOutputStream fileOutputStream2 = new FileOutputStream(OUTPUT_DIR3);
 		ObjectOutputStream output2 = new ObjectOutputStream(fileOutputStream2);
-		
-		ArrayList<CopyBook> booklis= new ArrayList();
-		
+
+		ArrayList<CopyBook> booklis = new ArrayList();
+
 		try {
 
 			// Read from the stored file
@@ -126,7 +119,7 @@ public  void  saveCopyBook(ArrayList<CopyBook> cps) throws IOException{
 				cps.addAll(booklis);
 
 				output2.writeObject(cps);
-                 System.out.println("Added");
+				System.out.println("Added");
 				output2.close();
 			} else {
 				output2.writeObject(cps);
@@ -140,50 +133,48 @@ public  void  saveCopyBook(ArrayList<CopyBook> cps) throws IOException{
 			e.printStackTrace();
 		}
 
-		
 	}
 
-	public LibraryMember findMemberById(int id) throws IOException, ClassNotFoundException{
-		
-		LibraryMember memberf= null;
-		
-     FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR));
-		
+	public LibraryMember findMemberById(int id) throws IOException, ClassNotFoundException {
+
+		LibraryMember memberf = null;
+
+		FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR));
+
 		ObjectInputStream input = new ObjectInputStream(fileInputStream);
-		ArrayList<LibraryMember> memlis= new ArrayList();
-		
+		ArrayList<LibraryMember> memlis = new ArrayList();
+
 		if (input.available() > 0) {
 			memlis = (ArrayList) input.readObject();
-			
-			for(int i=0;i<memlis.size();i++){
-				
-				if(memlis.get(i).getMemberId()==id){
-					memberf=(memlis.get(i));
+
+			for (int i = 0; i < memlis.size(); i++) {
+
+				if (memlis.get(i).getMemberId() == id) {
+					memberf = (memlis.get(i));
 				}
 			}
 		}
 		return memberf;
 	}
-	public Book findBookBySBN(String ISBN){
+
+	public Book findBookBySBN(String ISBN) {
 		try {
-			//Read from the stored file
 			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR2));
 			ObjectInputStream input = new ObjectInputStream(fileInputStream);
 			List<Book> books = (List<Book>) input.readObject();
-			int copyCount = 0; Book details = null;
-			for(Book book: books){
-				if(book.getISBN().equals(ISBN)){
+			int copyCount = 0;
+			Book details = null;
+			for (Book book : books) {
+				if (book.getISBN().equals(ISBN)) {
 					details = book;
 					return book;
-				}else{
+				} else {
 					System.out.println("ISBN provided is invalid");
 					return null;
 				}
 			}
 			input.close();
 			return details;
-			
-			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -193,7 +184,36 @@ public  void  saveCopyBook(ArrayList<CopyBook> cps) throws IOException{
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return null;
-		} 
+		}
+	}
+
+	public static LibraryMember findMemberByDetails(String detail) throws IOException, ClassNotFoundException {
+
+		LibraryMember memberf = null;
+		ArrayList<LibraryMember> memlis = new ArrayList();
+
+		try {
+			System.out.println("==================================" + detail);
+			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR));
+			ObjectInputStream input = new ObjectInputStream(fileInputStream);
+			memlis = (ArrayList) input.readObject();
+			input.close();
+			for (int i = 0; i < memlis.size(); i++) {
+				System.out.println(memlis.get(i).getFirstName());
+				if (memlis.get(i).getFirstName().equals(detail)) {
+					memberf = (memlis.get(i));
+					
+				}
+			}
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return memberf;
+
 	}
 
 }
