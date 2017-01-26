@@ -101,10 +101,12 @@ public class AdminController extends Application implements Initializable {
 		int zp = Integer.parseInt(zip.getText());
 		
 			Address ad = new Address(sn, ct, st, zp);
-			Person p = new LibraryMember(fn, ln, pn, ad, LibraryMember.memberId);
+			LibraryMember lm = new LibraryMember(fn, ln, pn, ad, LibraryMember.memberId);
 			
-        DataFacade pd= new DataFacade();
-        pd.saveLibraryMember(p);
+       // DataFacade pd= new DataFacade();
+       DataFacade.saveLibraryMember(lm);
+		
+
 	}
 
 	@FXML
@@ -126,12 +128,14 @@ public class AdminController extends Application implements Initializable {
 			ch3 = 7;
 		else
 			ch3 = 21;
+		 Address a2= new Address(streetNum2.getText(),city2.getText(),state2.getText(),Integer.parseInt(zip2.getText()));
+		 Author a1= new Author (fname2.getText(),lname2.getText(),phoneNum2.getText(),a2,ch2,bio.getText());
 
-		Address a2 = new Address("343", "faf", "afa", 34);
-		Author a1 = new Author("jkajf", "fdafa", "kjkaj", a2, true, "bio");
+		//Address a2 = new Address("343", "faf", "afa", 34);
+		//Author a1 = new Author("jkajf", "fdafa", "kjkaj", a2, true, "bio");
 
 		int cpn = Integer.parseInt(cp.getText());
-
+		
 		Book bk = new Book(title.getText(), isbn.getText(), ch3, ch, a1, cpn);
 		
 		for(int i=1;i<=cpn;i++){
@@ -139,13 +143,11 @@ public class AdminController extends Application implements Initializable {
 			copies.add(cp);
 		}
 
-		books.add(bk);
 
-		DataFacade d= new DataFacade();
-		d.saveBook(books);
+		DataFacade.saveBook(bk);
 		clearNewBookForm();
-		alertMessage("Book added Successfully");
-		d.saveCopyBook(copies);
+		alertMessage("Book added successfully");
+
 	}
 	
 	private void clearNewBookForm(){
@@ -280,12 +282,12 @@ public class AdminController extends Application implements Initializable {
 	private TextField memberSearchTf;
 	
 	@FXML
-	public void searchBookHandle() throws IOException {
+	public void searchBookHandle() throws IOException, ClassNotFoundException {
 		
 		String ISBN = this.searchField.getText();
-		DataFacade dataFacade = new DataFacade();
+		//DataFacade dataFacade = new DataFacade();
 		
-		Book bookDetails = dataFacade.findBookBySBN(ISBN);
+		Book bookDetails = DataFacade.findBookByTitle(ISBN);
 		try{
 			bookTitle.setText(bookDetails.getTitle());
 			bookISBN.setText(bookDetails.getISBN());
