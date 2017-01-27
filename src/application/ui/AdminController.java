@@ -31,10 +31,10 @@ import javafx.stage.Stage;
 
 public class AdminController extends Application implements Initializable {
 
-	private List<Person> members=new ArrayList();
+	private List<Person> members = new ArrayList();
 	private ArrayList<Book> books = new ArrayList();
 	private ArrayList<CopyBook> copies = new ArrayList();
-	
+
 	@FXML
 	private TextField fname;
 	@FXML
@@ -83,7 +83,7 @@ public class AdminController extends Application implements Initializable {
 	private Button sm;
 	@FXML
 	private TextField st;
-	
+
 	public static final String OUTPUT_DIR = System.getProperty("user.dir")
 			+ "\\src\\application\\dataaccess\\staffInfo.txt";
 	public static final String OUTPUT_DIR2 = System.getProperty("user.dir")
@@ -99,14 +99,11 @@ public class AdminController extends Application implements Initializable {
 		String ct = city.getText();
 		String st = state.getText();
 		int zp = Integer.parseInt(zip.getText());
-		
-			Address ad = new Address(sn, ct, st, zp);
-			LibraryMember lm = new LibraryMember(fn, ln, pn, ad);
-			
-       // DataFacade pd= new DataFacade();
-       DataFacade.saveLibraryMember(lm);
-		
 
+		Address ad = new Address(sn, ct, st, zp);
+		LibraryMember lm = new LibraryMember(fn, ln, pn, ad);
+		this.alertMessage("Succes with member id as: " + lm.getMemberId());
+		DataFacade.saveLibraryMember(lm);
 	}
 
 	@FXML
@@ -128,29 +125,29 @@ public class AdminController extends Application implements Initializable {
 			ch3 = 7;
 		else
 			ch3 = 21;
-		 Address a2= new Address(streetNum2.getText(),city2.getText(),state2.getText(),Integer.parseInt(zip2.getText()));
-		 Author a1= new Author (fname2.getText(),lname2.getText(),phoneNum2.getText(),a2,ch2,bio.getText());
+		Address a2 = new Address(streetNum2.getText(), city2.getText(), state2.getText(),
+				Integer.parseInt(zip2.getText()));
+		Author a1 = new Author(fname2.getText(), lname2.getText(), phoneNum2.getText(), a2, ch2, bio.getText());
 
-		//Address a2 = new Address("343", "faf", "afa", 34);
-		//Author a1 = new Author("jkajf", "fdafa", "kjkaj", a2, true, "bio");
+		// Address a2 = new Address("343", "faf", "afa", 34);
+		// Author a1 = new Author("jkajf", "fdafa", "kjkaj", a2, true, "bio");
 
 		int cpn = Integer.parseInt(cp.getText());
-		
+
 		Book bk = new Book(title.getText(), isbn.getText(), ch3, ch, a1, cpn);
-		
-		for(int i=1;i<=cpn;i++){
-			CopyBook cp= new CopyBook(i,bk);
+
+		for (int i = 1; i <= cpn; i++) {
+			CopyBook cp = new CopyBook(i, bk);
 			copies.add(cp);
 		}
-
 
 		DataFacade.saveBook(bk);
 		clearNewBookForm();
 		alertMessage("Book added successfully");
 
 	}
-	
-	private void clearNewBookForm(){
+
+	private void clearNewBookForm() {
 		fname.setText("");
 		lname.setText("");
 		phoneNum.setText("");
@@ -162,17 +159,17 @@ public class AdminController extends Application implements Initializable {
 		isbn.setText("");
 		bio.setText("");
 		cp.setText("");
-		
+
 		fname2.setText("");
 		lname2.setText("");
 		phoneNum2.setText("");
 	}
-	
+
 	@FXML
-	public void memberSearchHandle() throws NumberFormatException, ClassNotFoundException, IOException{
+	public void memberSearchHandle() throws NumberFormatException, ClassNotFoundException, IOException {
 		LibraryMember lb = DataFacade.findMemberByName(memberSearchTf.getText());
 	}
-	
+
 	private void alertMessage(String msg) {
 		Alert alert = new Alert(AlertType.INFORMATION, msg, ButtonType.OK);
 		alert.showAndWait();
@@ -215,8 +212,8 @@ public class AdminController extends Application implements Initializable {
 		protected void writeStreamHeader() {
 		}
 	}
-	
-	public void loadAdminWindow(){
+
+	public void loadAdminWindow() {
 		Pane root;
 		try {
 			root = (Pane) FXMLLoader.load(SuperAdminController.class.getResource("Admin.fxml"));
@@ -228,9 +225,9 @@ public class AdminController extends Application implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@FXML
-	public void clearSearchBookForm(){
+	public void clearSearchBookForm() {
 		searchField.setText("");
 		bookTitle.setText("");
 		bookISBN.setText("");
@@ -247,7 +244,7 @@ public class AdminController extends Application implements Initializable {
 		bio1.setText("");
 		cr21.setText("");
 	}
-	
+
 	@FXML
 	private TextField searchField;
 	@FXML
@@ -280,28 +277,27 @@ public class AdminController extends Application implements Initializable {
 	private TextField bio1;
 	@FXML
 	private TextField cr21;
-	
-	
+
 	@FXML
 	private TextField memberSearchTf;
-	
+
 	@FXML
 	private TextField extraCopies;
-	
+
 	@FXML
 	public void searchBookHandle() throws IOException, ClassNotFoundException {
-		
+
 		String ISBN = this.searchField.getText();
-		//DataFacade dataFacade = new DataFacade();
-		
+		// DataFacade dataFacade = new DataFacade();
+
 		Book bookDetails = DataFacade.findBookByISBN(ISBN);
-		try{
+		try {
 			bookTitle.setText(bookDetails.getTitle());
 			bookISBN.setText(bookDetails.getISBN());
 			bookCopies.setText(Integer.toString(bookDetails.getnumCopies()));
 			bDuration.setText(Integer.toString(bookDetails.getBorrowDuration()));
 			bAvailability.setText(Boolean.toString(bookDetails.isAvailability()));
-			
+
 			fname21.setText(bookDetails.authors.getFirstName());
 			lname21.setText(bookDetails.authors.getLastName());
 			phoneNum21.setText(bookDetails.authors.getPhoneNumber());
@@ -311,28 +307,27 @@ public class AdminController extends Application implements Initializable {
 			zip21.setText(Integer.toString(bookDetails.authors.getAddress().getZip()));
 			bio1.setText(bookDetails.authors.getBio());
 			cr21.setText(Boolean.toString(bookDetails.authors.isCredentials()));
-		}catch(Exception e){
+		} catch (Exception e) {
 			alertMessage("Invalid ISBN entered!! Enter a valid one.");
 		}
 	}
-	
+
 	@FXML
-	public void addMoreBookCopies(){
-		try{
+	public void addMoreBookCopies() {
+		try {
 			int extraCopies = Integer.valueOf(this.extraCopies.getText());
 			String ISBN_ = this.searchField.getText();
-			
-			if(ISBN_.length() != 0){
+
+			if (ISBN_.length() != 0) {
 				System.out.println("Testing here!! ===== " + extraCopies);
 				System.out.println("ISBN ===== " + ISBN_);
-			}else{
+			} else {
 				System.out.println("Enter the right ISBN! ");
 			}
-			
-			
-		}catch(NumberFormatException e){
+
+		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 }

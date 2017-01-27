@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.business.Book;
+import application.business.CheckoutRecord;
 import application.business.CopyBook;
 import application.business.LibraryMember;
 import application.business.Person;
@@ -34,6 +35,9 @@ public class DataFacade {
 
 	public static final String OUTPUT_DIR3 = System.getProperty("user.dir")
 			+ "//src//application//dataaccess//copyBookInfo.txt";
+	
+	public static final String OUTPUT_DIR4 = System.getProperty("user.dir")
+			+ "//src//application//dataaccess//checkoutlist.txt";
 	// private ArrayList<Book> books = new ArrayList();
 
 	public static void saveLibraryMember(LibraryMember p) throws IOException, ClassNotFoundException {
@@ -202,28 +206,19 @@ public class DataFacade {
 	}
 
 	public static Book findBookByISBN(String title) throws IOException, ClassNotFoundException {
-
 		Book bkf = null;
 		ArrayList<Book> memlis = new ArrayList();
 
 		try {
-
 			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR2));
-
 			ObjectInputStream input = new ObjectInputStream(fileInputStream);
-
 			memlis = (ArrayList) input.readObject();
-
 			input.close();
-
+			
 			for (int i = 0; i < memlis.size(); i++) {
-
 				if (memlis.get(i).getISBN().equals(title)) {
-
 					bkf = (memlis.get(i));
-
 				}
-
 			}
 
 		} catch (FileNotFoundException e) {
@@ -232,9 +227,45 @@ public class DataFacade {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
 		return bkf;
-
+	}
+	
+	public static LibraryMember findMemberByMemberId(String memberID) throws IOException, ClassNotFoundException {
+		LibraryMember memberf = null;
+		ArrayList<LibraryMember> memlis = new ArrayList();
+		try {
+			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR));
+			ObjectInputStream input = new ObjectInputStream(fileInputStream);
+			memlis = (ArrayList) input.readObject();
+			input.close();
+			for (int i = 0; i < memlis.size(); i++) {
+				if (memlis.get(i).getMemberId().equals(memberID)) {
+					memberf = (memlis.get(i));
+				}
+			}
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return memberf;
+	}
+	
+	public static List<CheckoutRecord> getAllCheckoutRecords() throws IOException, ClassNotFoundException {
+		List<CheckoutRecord> records = new ArrayList<CheckoutRecord>();
+		try {
+			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR4));
+			ObjectInputStream input = new ObjectInputStream(fileInputStream);
+			records = (ArrayList<CheckoutRecord>) input.readObject();
+			
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return records;
 	}
 
 }

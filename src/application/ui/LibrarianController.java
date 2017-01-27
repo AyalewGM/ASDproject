@@ -1,21 +1,18 @@
 package application.ui;
 
-import application.Main;
 import application.business.*;
+import application.dataaccess.DataFacade;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,30 +20,22 @@ import java.util.List;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class LibrarianController extends Application {
@@ -69,12 +58,6 @@ public class LibrarianController extends Application {
 	private Label lblDueDate;
 
 	@FXML
-	private TextField txtMemberId;
-
-	@FXML
-	private TextField txtISBN;
-
-	@FXML
 	private TextField txtdueDate;
 
 	@FXML
@@ -86,14 +69,8 @@ public class LibrarianController extends Application {
 	@FXML
 	private Librarian librarian;
 
-	// @FXML
-	// private Button btnCancel;
-
 	@FXML
-
 	private TableView tableView;
-	// @FXML
-	// TableView tabView;
 	@FXML
 	private TableColumn<CheckoutEntries, String> tcmemberId;
 	@FXML
@@ -110,15 +87,163 @@ public class LibrarianController extends Application {
 	TableColumn colBookISBN;
 	@FXML
 	TableColumn colBookTitle;
-
 	@FXML
 	TableColumn colCheckoutDate;
-
 	@FXML
 	TableColumn colDueDate;
-
 	@FXML
 	Tab tbView;
+
+	@FXML
+	private TextField txtMemberId;
+	@FXML
+	private TextField txtISBN;
+	@FXML
+	private Label coBookTitle;
+	@FXML
+	private Label coBookAuth;
+	@FXML
+	private Label coBookAvailability;
+	@FXML
+	private Label coBookCopyCount;
+
+	private boolean memberValid = false;
+	private boolean isbnValid = false;
+	LibraryMember memberCheckout;
+
+	@FXML
+	public void checkMemberValidity() throws ClassNotFoundException, IOException {
+		String reqMemberId = txtMemberId.getText();
+		LibraryMember member = DataFacade.findMemberByMemberId(reqMemberId);
+		if (member.getMemberId().equals(reqMemberId)) {
+			memberValid = true;
+			System.out.println("Valid member Id");
+		} else {
+			memberValid = false;
+			alertMessage("Invalid / Unregistered Member Id provided");
+		}
+	}
+
+	@FXML
+	public void searchBookByISBN() throws IOException, ClassNotFoundException {
+
+		String ISBN = this.txtISBN.getText();
+		Book bookDetails = DataFacade.findBookByISBN(ISBN);
+		try {
+			if (bookDetails.equals(null)) {
+				isbnValid = false;
+				alertMessage("ISBN entered is not registered!! Enter a valid one.");
+			} else {
+				isbnValid = true;
+				String dueDate = dueDateCalculator(bookDetails);
+				System.out.println(dueDate);
+				txtdueDate.setText(dueDate);
+				coBookTitle.setText(bookDetails.getTitle());
+				coBookAuth.setText(bookDetails.getISBN());
+				coBookCopyCount.setText(Integer.toString(bookDetails.getnumCopies()));
+				coBookAvailability.setText(Boolean.toString(bookDetails.isAvailability()));
+			}
+		} catch (Exception e) {
+			alertMessage("Invalid ISBN entered!! Enter a valid one.");
+		}
+	}
+
+	public String dueDateCalculator(Book book) {
+		Calendar now = Calendar.getInstance();
+		if (book.isAvailability() == true) {
+			if (book.borrowDuration == 21) {
+				now.add(Calendar.DATE, 21);
+			} else if (book.borrowDuration == 7) {
+				now.add(Calendar.DATE, 7);
+			}
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		String date = sdf.format(now.getTime());
+		System.out.println(date);
+		sdf = new SimpleDateFormat("MM/dd/yyyy");
+		date = sdf.format(now.getTime());
+		return date;
+	}
+
+	private void alertMessage(String msg) {
+		Alert alert = new Alert(AlertType.INFORMATION, msg, ButtonType.OK);
+		alert.showAndWait();
+	}
+
+	private void addCheckoutEntry() {
+		try {
+			List<CheckoutRecord> entries = DataFacade.getAllCheckoutRecords();
+//			entries.get(entries.size()-1);
+			
+			String dueDate = txtdueDate.getText();
+			String memberId = txtMemberId.getText();
+			String bookISBN = txtISBN.getText();
+			String bookTittle = coBookTitle.getText();
+			Date currentDate = new Date();
+			
+			CheckoutRecord chekoutentry = new CheckoutRecord(dueDate, memberId, bookISBN, bookTittle, currentDate);
+
+			FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR_CheckoutList);
+			ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
+			
+			entries.add(chekoutentry);
+			output.writeObject(entries);
+			output.close();
+			this.alertMessage("Checkout Successfully processed!! Thanks");
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("File empty");
+			this.addSingleCheckoutEntry();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}finally{
+			//Do the updating of the book copies
+		}
+	}
+	
+	private void updateCopies(){
+		
+	}
+	
+	private void addSingleCheckoutEntry(){
+		try {
+			
+			String dueDate = txtdueDate.getText();
+			String memberId = txtMemberId.getText();
+			String bookISBN = txtISBN.getText();
+			String bookTittle = coBookTitle.getText();
+			Date currentDate = new Date();
+			
+			CheckoutRecord chekoutentry = new CheckoutRecord(dueDate, memberId, bookISBN, bookTittle, currentDate);
+
+			FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR_CheckoutList);
+			ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
+			List<CheckoutRecord> entries = new ArrayList<CheckoutRecord>();
+			entries.add(chekoutentry);
+			output.writeObject(entries);
+			output.close();
+			
+			this.alertMessage("Checkout processed Successfuli, Thanks");
+			
+			////Clear the input fields
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	public void bookCheckoutHandler() throws ParseException {
+		if (this.isbnValid && this.memberValid) {
+			this.addCheckoutEntry();
+		} else {
+			this.alertMessage("Invalid Member Id and / or ISBN provided");
+		}
+	}
 
 	private ObservableList<CheckoutEntries> data = FXCollections.observableArrayList();
 
@@ -159,30 +284,6 @@ public class LibrarianController extends Application {
 		return null;
 	}
 
-	public String dueDateCalculator(Book book) {
-
-		Calendar now = Calendar.getInstance();
-
-		if (book.isAvailability() == true) {
-			if (book.borrowDuration == 21) {
-				now.add(Calendar.DATE, 21);
-			} else if (book.borrowDuration == 7) {
-				now.add(Calendar.DATE, 7);
-			}
-		}
-
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		String date = sdf.format(now.getTime());
-		System.out.println(date);
-
-		// Define another Format of date
-		sdf = new SimpleDateFormat("MM/dd/yyyy");
-		date = sdf.format(now.getTime());
-
-		return date;
-
-	}
-
 	// Look for member
 	public LibraryMember memberFinder(List<LibraryMember> lb) {
 
@@ -203,18 +304,13 @@ public class LibrarianController extends Application {
 			if (book.getISBN().equals(txtISBN.getText())) {
 				return book;
 			}
-
 		}
 		return null;
 	}
 
 	@FXML
-
 	public void checkoutHandler() throws ParseException {
 
-		// BufferedReader br = null;
-		// String[] characters = new String[1024];//just an example - you have
-		// to initialize it to be big enough to hold all the lines!
 		List<Book> books = new ArrayList<>();
 		List<LibraryMember> libraryMembers = new ArrayList<>();
 
@@ -393,8 +489,8 @@ public class LibrarianController extends Application {
 		}
 
 	}
-	
-	public void loadAdminWindow(){
+
+	public void loadAdminWindow() {
 		Pane root;
 		try {
 			root = (Pane) FXMLLoader.load(SuperAdminController.class.getResource("LibrarianTabbed.fxml"));
@@ -406,8 +502,4 @@ public class LibrarianController extends Application {
 			e.printStackTrace();
 		}
 	}
-//
-//	public static void main(String[] args) {
-//		launch(args);
-//	}
 }

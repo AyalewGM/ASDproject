@@ -54,11 +54,11 @@ public class Main extends Application{
 
 	@FXML
 	private void handleLoginButtonAction() {
-		String uname = "admin";
-		String upass = "123";
-		
-//		String uname = username.getText();
-//		String upass = password.getText();
+//		String uname = "lib";
+//		String upass = "123";
+//		
+		String uname = username.getText();
+		String upass = password.getText();
 		if (uname.trim().length() == 0 || upass.trim().length() == 0) {
 			alertMessage("Fill all the required Fields");
 		} else {

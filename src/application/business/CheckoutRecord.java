@@ -1,13 +1,61 @@
 package application.business;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class CheckoutRecord implements Serializable{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	private String dueDate;
+	private String memberId;
+	private String bookISBN;
+	private String bookTittle;
+	private Date checkoutDate;
+	 
+	public CheckoutRecord(String dueDate, String memberId, String bookISBN, String bookTittle, Date checkoutDate) {
+		this.dueDate = dueDate;
+		this.memberId = memberId;
+		this.bookISBN = bookISBN;
+		this.bookTittle = bookTittle;
+		this.checkoutDate = checkoutDate;
+	}
+	
+	public String getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getBookISBN() {
+		return bookISBN;
+	}
+	public void setBookISBN(String bookISBN) {
+		this.bookISBN = bookISBN;
+	}
+	public String getBookTittle() {
+		return bookTittle;
+	}
+	public void setBookTittle(String bookTittle) {
+		this.bookTittle = bookTittle;
+	}
+	public Date getCheckoutDate() {
+		return checkoutDate;
+	}
+	public void setCheckoutDate(Date checkoutDate) {
+		this.checkoutDate = checkoutDate;
+	}
+
+
+
+
+
 	private LibraryMember recordMember;
 	public List<CheckoutEntries> checkoutEntries;
 	public CheckoutRecord(LibraryMember recordMember) {
