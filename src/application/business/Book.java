@@ -14,6 +14,10 @@ public class Book implements Serializable {
     public int numCopies;
     
 	public List<LibraryMember> members;
+	
+	public Book(){
+		
+	}
 
 	public Book(String title, String iSBN, int borrowDuration, boolean availability, Author authors, int numCopies) {
 

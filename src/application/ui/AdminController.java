@@ -12,7 +12,6 @@ import application.business.Author;
 import application.business.Book;
 import application.business.CopyBook;
 import application.business.LibraryMember;
-import application.business.Person;
 import application.dataaccess.DataFacade;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -31,9 +30,7 @@ import javafx.stage.Stage;
 
 public class AdminController extends Application implements Initializable {
 
-	private List<Person> members = new ArrayList();
-	private ArrayList<Book> books = new ArrayList();
-	private ArrayList<CopyBook> copies = new ArrayList();
+	private ArrayList<CopyBook> copies = new ArrayList<CopyBook>();
 
 	@FXML
 	private TextField fname;
@@ -129,9 +126,6 @@ public class AdminController extends Application implements Initializable {
 				Integer.parseInt(zip2.getText()));
 		Author a1 = new Author(fname2.getText(), lname2.getText(), phoneNum2.getText(), a2, ch2, bio.getText());
 
-		// Address a2 = new Address("343", "faf", "afa", 34);
-		// Author a1 = new Author("jkajf", "fdafa", "kjkaj", a2, true, "bio");
-
 		int cpn = Integer.parseInt(cp.getText());
 
 		Book bk = new Book(title.getText(), isbn.getText(), ch3, ch, a1, cpn);
@@ -144,7 +138,6 @@ public class AdminController extends Application implements Initializable {
 		DataFacade.saveBook(bk);
 		clearNewBookForm();
 		alertMessage("Book added successfully");
-
 	}
 
 	private void clearNewBookForm() {
@@ -159,15 +152,9 @@ public class AdminController extends Application implements Initializable {
 		isbn.setText("");
 		bio.setText("");
 		cp.setText("");
-
 		fname2.setText("");
 		lname2.setText("");
 		phoneNum2.setText("");
-	}
-
-	@FXML
-	public void memberSearchHandle() throws NumberFormatException, ClassNotFoundException, IOException {
-		LibraryMember lb = DataFacade.findMemberByName(memberSearchTf.getText());
 	}
 
 	private void alertMessage(String msg) {
@@ -208,7 +195,6 @@ public class AdminController extends Application implements Initializable {
 		public NoHeaderObjectOutputStream(OutputStream os) throws IOException {
 			super(os);
 		}
-
 		protected void writeStreamHeader() {
 		}
 	}
@@ -232,6 +218,7 @@ public class AdminController extends Application implements Initializable {
 		bookTitle.setText("");
 		bookISBN.setText("");
 		bookCopies.setText("");
+		bookCopiesAvailable.setText("");
 		bDuration.setText("");
 		bAvailability.setText("");
 		fname21.setText("");
@@ -243,6 +230,7 @@ public class AdminController extends Application implements Initializable {
 		zip21.setText("");
 		bio1.setText("");
 		cr21.setText("");
+		extraCopies.setText("");
 	}
 
 	@FXML
@@ -277,7 +265,9 @@ public class AdminController extends Application implements Initializable {
 	private TextField bio1;
 	@FXML
 	private TextField cr21;
-
+	@FXML
+	private TextField bookCopiesAvailable;
+	
 	@FXML
 	private TextField memberSearchTf;
 
@@ -288,10 +278,10 @@ public class AdminController extends Application implements Initializable {
 	public void searchBookHandle() throws IOException, ClassNotFoundException {
 
 		String ISBN = this.searchField.getText();
-		// DataFacade dataFacade = new DataFacade();
 
 		Book bookDetails = DataFacade.findBookByISBN(ISBN);
 		try {
+			bookCopiesAvailable.setText(Integer.toString(LibrarianController.getCopyBookCount(ISBN)));
 			bookTitle.setText(bookDetails.getTitle());
 			bookISBN.setText(bookDetails.getISBN());
 			bookCopies.setText(Integer.toString(bookDetails.getnumCopies()));
@@ -313,18 +303,33 @@ public class AdminController extends Application implements Initializable {
 	}
 
 	@FXML
-	public void addMoreBookCopies() {
+	public void addMoreBookCopies() throws IOException {
 		try {
 			int extraCopies = Integer.valueOf(this.extraCopies.getText());
-			String ISBN_ = this.searchField.getText();
+			String ISBN = this.searchField.getText();
 
-			if (ISBN_.length() != 0) {
-				System.out.println("Testing here!! ===== " + extraCopies);
-				System.out.println("ISBN ===== " + ISBN_);
+			DataFacade df = new DataFacade();
+			List<Book> allBooks = df.getAllBooks();
+			if (ISBN.length() != 0 && extraCopies > 0) {
+				int count = 0;
+				Book temp;
+				
+				for(Book book: allBooks){
+					if(book.getISBN().equals(ISBN)){
+						temp = book;
+						temp.setNumCopies(extraCopies + book.getnumCopies());
+						allBooks.set(count, temp);
+						df.writeBooksToFile(allBooks);
+						DataFacade.saveExtraBookCopies(temp, extraCopies);
+						this.alertMessage("More "+extraCopies+" added to book ISBN "+ISBN);
+						this.clearSearchBookForm();
+						return;
+					}
+					count ++;
+				}
 			} else {
 				System.out.println("Enter the right ISBN! ");
 			}
-
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}

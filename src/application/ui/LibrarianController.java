@@ -3,14 +3,10 @@ package application.ui;
 import application.business.*;
 import application.dataaccess.DataFacade;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,8 +16,6 @@ import java.util.List;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -32,9 +26,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -68,9 +60,6 @@ public class LibrarianController extends Application {
 
 	@FXML
 	private Librarian librarian;
-
-	@FXML
-	private TableView tableView;
 	@FXML
 	private TableColumn<CheckoutEntries, String> tcmemberId;
 	@FXML
@@ -80,20 +69,7 @@ public class LibrarianController extends Application {
 	private TableColumn<CheckoutEntries, String> tccheckoutDate;
 	@FXML
 	private TableColumn<CheckoutEntries, String> tcdueDate;
-
-	@FXML
-	TableColumn colMemberId;
-	@FXML
-	TableColumn colBookISBN;
-	@FXML
-	TableColumn colBookTitle;
-	@FXML
-	TableColumn colCheckoutDate;
-	@FXML
-	TableColumn colDueDate;
-	@FXML
 	Tab tbView;
-
 	@FXML
 	private TextField txtMemberId;
 	@FXML
@@ -110,18 +86,32 @@ public class LibrarianController extends Application {
 	private boolean memberValid = false;
 	private boolean isbnValid = false;
 	LibraryMember memberCheckout;
+	
+	public LibrarianController() {
+
+	}
 
 	@FXML
-	public void checkMemberValidity() throws ClassNotFoundException, IOException {
+	public void checkMemberValidity(){
 		String reqMemberId = txtMemberId.getText();
-		LibraryMember member = DataFacade.findMemberByMemberId(reqMemberId);
-		if (member.getMemberId().equals(reqMemberId)) {
-			memberValid = true;
-			System.out.println("Valid member Id");
-		} else {
-			memberValid = false;
-			alertMessage("Invalid / Unregistered Member Id provided");
+		LibraryMember member;
+		try {
+			member = DataFacade.findMemberByMemberId(reqMemberId);
+			if (member.getMemberId().equals(reqMemberId)) {
+				memberValid = true;
+				System.out.println("Valid member Id");
+			} else {
+				memberValid = false;
+				alertMessage("Invalid / Unregistered Member Id provided");
+			}
+		} catch (ClassNotFoundException | IOException e) {
+			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+			e.printStackTrace();
+		} catch(Exception e){
+			this.alertMessage("Invalid ISBN and / or Member Id, Press the CLEAR button to reset the field");
+			e.printStackTrace();
 		}
+		
 	}
 
 	@FXML
@@ -140,12 +130,24 @@ public class LibrarianController extends Application {
 				txtdueDate.setText(dueDate);
 				coBookTitle.setText(bookDetails.getTitle());
 				coBookAuth.setText(bookDetails.getISBN());
-				coBookCopyCount.setText(Integer.toString(bookDetails.getnumCopies()));
+				
+				coBookCopyCount.setText(Integer.toString(getCopyBookCount(ISBN)));
 				coBookAvailability.setText(Boolean.toString(bookDetails.isAvailability()));
 			}
 		} catch (Exception e) {
 			alertMessage("Invalid ISBN entered!! Enter a valid one.");
 		}
+	}
+	
+	public static int getCopyBookCount(String ISBN) throws ClassNotFoundException, IOException{
+		List<CopyBook> copies = DataFacade.getBookCopiesByISBN(ISBN);
+		int count = 0;
+		for(CopyBook copy: copies){
+			if(copy.isAvailability()){
+				count++;
+			}
+		}
+		return count;
 	}
 
 	public String dueDateCalculator(Book book) {
@@ -170,10 +172,9 @@ public class LibrarianController extends Application {
 		alert.showAndWait();
 	}
 
-	private void addCheckoutEntry() {
+	private void addCheckoutEntry() throws ClassNotFoundException {
 		try {
 			List<CheckoutRecord> entries = DataFacade.getAllCheckoutRecords();
-//			entries.get(entries.size()-1);
 			
 			String dueDate = txtdueDate.getText();
 			String memberId = txtMemberId.getText();
@@ -181,14 +182,16 @@ public class LibrarianController extends Application {
 			String bookTittle = coBookTitle.getText();
 			Date currentDate = new Date();
 			
-			CheckoutRecord chekoutentry = new CheckoutRecord(dueDate, memberId, bookISBN, bookTittle, currentDate);
-
+			CopyBook copyBook = updateCopyBookAvailability(bookISBN);
+			
+			CheckoutRecord chekoutentry = new CheckoutRecord(dueDate, memberId, bookISBN, bookTittle, currentDate, copyBook);
 			FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR_CheckoutList);
 			ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
 			
 			entries.add(chekoutentry);
 			output.writeObject(entries);
 			output.close();
+			
 			this.alertMessage("Checkout Successfully processed!! Thanks");
 			
 		} catch (FileNotFoundException e) {
@@ -199,15 +202,23 @@ public class LibrarianController extends Application {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}finally{
-			//Do the updating of the book copies
+			clearCheckoutForm();
 		}
 	}
 	
-	private void updateCopies(){
+	public CopyBook updateCopyBookAvailability(String ISBN) throws ClassNotFoundException, IOException{
+		List<CopyBook> copies = DataFacade.getBookCopiesByISBN(ISBN);
 		
+		for(CopyBook copy : copies){
+			if(copy.isAvailability()){
+				copy.setAvailability(false);
+				return copy;
+			}
+		}
+		return null;
 	}
 	
-	private void addSingleCheckoutEntry(){
+	private void addSingleCheckoutEntry() throws ClassNotFoundException{
 		try {
 			
 			String dueDate = txtdueDate.getText();
@@ -216,7 +227,9 @@ public class LibrarianController extends Application {
 			String bookTittle = coBookTitle.getText();
 			Date currentDate = new Date();
 			
-			CheckoutRecord chekoutentry = new CheckoutRecord(dueDate, memberId, bookISBN, bookTittle, currentDate);
+			CopyBook copyBook = updateCopyBookAvailability(bookISBN);
+			
+			CheckoutRecord chekoutentry = new CheckoutRecord(dueDate, memberId, bookISBN, bookTittle, currentDate, copyBook);
 
 			FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR_CheckoutList);
 			ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
@@ -227,7 +240,7 @@ public class LibrarianController extends Application {
 			
 			this.alertMessage("Checkout processed Successfuli, Thanks");
 			
-			////Clear the input fields
+			////Clear the input fields for checkout
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -237,240 +250,17 @@ public class LibrarianController extends Application {
 	}
 
 	@FXML
-	public void bookCheckoutHandler() throws ParseException {
+	public void bookCheckoutHandler() throws ParseException, ClassNotFoundException {
 		if (this.isbnValid && this.memberValid) {
 			this.addCheckoutEntry();
 		} else {
 			this.alertMessage("Invalid Member Id and / or ISBN provided");
 		}
 	}
-
-	private ObservableList<CheckoutEntries> data = FXCollections.observableArrayList();
-
-	public LibrarianController() {
-
-	}
-
-	public boolean bookIdValidator(List<Book> books, String s) {
-
-		for (Book e : books) {
-			if (e.getISBN().equals(s)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public boolean memberIdValidator(List<LibraryMember> lb, String s) {
-		// int idInt = Integer.parseInt(s);
-		for (LibraryMember e : lb) {
-			if (e.getMemberId().equals(s)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public Book availabiltyChecker(List<Book> book) {
-
-		for (Book e : book) {
-			if (e.availability) {
-				return e;
-			}
-		}
-
-		return null;
-	}
-
-	// Look for member
-	public LibraryMember memberFinder(List<LibraryMember> lb) {
-
-		// int idInt = Integer.parseInt(txtMemberId.getText());
-
-		for (LibraryMember member : lb) {
-			if (member.getMemberId().equals(txtMemberId.getText())) {
-				return member;
-			}
-
-		}
-		return null;
-	}
-
-	// Look for member
-	public Book bookFinder(List<Book> bk) {
-		for (Book book : bk) {
-			if (book.getISBN().equals(txtISBN.getText())) {
-				return book;
-			}
-		}
-		return null;
-	}
-
-	@FXML
-	public void checkoutHandler() throws ParseException {
-
-		List<Book> books = new ArrayList<>();
-		List<LibraryMember> libraryMembers = new ArrayList<>();
-
-		try {
-
-			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR_Book));
-			ObjectInputStream input = new ObjectInputStream(fileInputStream);
-
-			books = (List<Book>) input.readObject();
-
-			System.out.println(books.get(0).ISBN);
-			input.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		try {
-
-			FileInputStream fileInputStream2 = new FileInputStream(new File(OUTPUT_DIR_Member));
-			ObjectInputStream input2 = new ObjectInputStream(fileInputStream2);
-			LibraryMember m = (LibraryMember) input2.readObject();
-			libraryMembers.add(m);
-			System.out.println(m.firstName);
-			System.out.println(m.getMemberId());
-			input2.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		// System.out.println(txtISBN.getText());
-
-		if (bookIdValidator(books, txtISBN.getText()) == false) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error Dialog");
-			alert.setHeaderText("Invalid ISBN or the book does not exist in this library");
-			alert.setContentText("Please check it and enter it again!");
-
-			alert.showAndWait();
-		}
-
-		// System.out.println("The user ID is: " + txtMemberId.getText());
-		if (memberIdValidator(libraryMembers, txtMemberId.getText()) == false) {
-
-			Alert alert = new Alert(AlertType.ERROR);
-
-			alert.setTitle("Error Dialog");
-			alert.setHeaderText("Invalid Members ID");
-
-			alert.setContentText("Please check it and enter it again!");
-
-			alert.showAndWait();
-		}
-
-		if (memberIdValidator(libraryMembers, txtMemberId.getText()) && bookIdValidator(books, txtISBN.getText())
-				&& availabiltyChecker(books) != null) {
-
-			CheckoutEntries entries = null;
-			try {
-
-				FileInputStream fileInputStream4 = new FileInputStream(new File(OUTPUT_DIR_CheckoutList));
-				ObjectInputStream input4 = new ObjectInputStream(fileInputStream4);
-
-				// entries=(List<CheckoutEntries>)input4.readObject();
-
-				entries = (CheckoutEntries) input4.readObject();
-				input4.close();
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-
-			try {
-				LibraryMember member;
-
-				member = memberFinder(libraryMembers);
-				CheckoutRecord checkout = new CheckoutRecord(member);
-				// checkout.getRecordMember().getMemberId()
-				DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-				Date duedate = df.parse(dueDateCalculator(bookFinder(books)));
-				Date currentDate = new Date();
-				// System.out.println("I am here ");
-				// set the dueDate to the text field
-				SimpleDateFormat andf = new SimpleDateFormat("MM/dd/yyyy");
-
-				txtdueDate = new TextField();
-				// txtdueDate.setText("Me");
-				// txtdueDate.setText(andf.format(duedate));
-				txtdueDate.appendText(andf.format(duedate).toString());
-				CheckoutEntries chkoutentry = new CheckoutEntries(currentDate, duedate, checkout);
-				FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR_CheckoutList);
-
-				ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
-				output.writeObject(chkoutentry);
-				// output.writeObject(entries);
-				output.close();
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			// read data for table view
-			List<CheckoutEntries> anotherEntries = new ArrayList<CheckoutEntries>();
-
-			try {
-
-				FileInputStream fileInputStream3 = new FileInputStream(new File(OUTPUT_DIR_CheckoutList));
-				ObjectInputStream input3 = new ObjectInputStream(fileInputStream3);
-
-				CheckoutEntries chk = (CheckoutEntries) input3.readObject();
-				System.out.println(chk.dateOfCheckout);
-				System.out.println("Reading is good!");
-				anotherEntries.add(chk);
-				input3.close();
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-
-			ObservableList data = FXCollections.observableList(anotherEntries);
-
-			colMemberId.setCellValueFactory(new PropertyValueFactory<CheckoutEntries, String>("memberId"));
-
-			colBookISBN.setCellValueFactory(new PropertyValueFactory<CheckoutEntries, String>("ISBN"));
-			colBookTitle.setCellValueFactory(new PropertyValueFactory<CheckoutEntries, String>("title"));
-			colCheckoutDate.setCellValueFactory(new PropertyValueFactory<CheckoutEntries, String>("CheckoutDate"));
-			colDueDate.setCellValueFactory(new PropertyValueFactory<CheckoutEntries, String>("DueDate"));
-
-			tableView.setItems(data);
-
-			tableView.getColumns().addAll(colMemberId, colBookISBN, colBookTitle, colCheckoutDate, colDueDate);
-			tbView.setContent(tableView);
-
-		}
-
-	}
-
+	
 	@FXML
 	public void cancelHandler() {
-
-		Platform.exit();
+		clearCheckoutForm();
 	}
 
 	@Override
@@ -487,7 +277,6 @@ public class LibrarianController extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void loadAdminWindow() {
@@ -501,5 +290,15 @@ public class LibrarianController extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void clearCheckoutForm() {
+		txtMemberId.setText("");
+		txtISBN.setText("");
+		txtdueDate.setText("");
+		coBookTitle.setText("");
+		coBookAuth.setText("");
+		coBookAvailability.setText("");
+		coBookCopyCount.setText("");
 	}
 }

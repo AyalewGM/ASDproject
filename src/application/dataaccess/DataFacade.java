@@ -14,7 +14,6 @@ import application.business.Book;
 import application.business.CheckoutRecord;
 import application.business.CopyBook;
 import application.business.LibraryMember;
-import application.business.Person;
 
 public class DataFacade {
 
@@ -38,29 +37,12 @@ public class DataFacade {
 	
 	public static final String OUTPUT_DIR4 = System.getProperty("user.dir")
 			+ "//src//application//dataaccess//checkoutlist.txt";
-	// private ArrayList<Book> books = new ArrayList();
 
 	public static void saveLibraryMember(LibraryMember p) throws IOException, ClassNotFoundException {
 
-		ArrayList<LibraryMember> memb = new ArrayList();
+		List<LibraryMember> memb = new ArrayList<LibraryMember>();
 		memb.add(p);
-
-//		try {
-//
-//			FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR);
-//			ObjectOutputStream output1 = new ObjectOutputStream(fileOutputStream);
-//
-//			output1.writeObject(memb);
-//			System.out.println("Added");
-//			output1.close();
-//
-//		} catch (FileNotFoundException e) {
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-
 		try {
-
 			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR));
 			ObjectInputStream input2 = new ObjectInputStream(fileInputStream);
 			memb.addAll((ArrayList) input2.readObject());
@@ -86,93 +68,99 @@ public class DataFacade {
 
 	public static void saveBook(Book bk) throws IOException {
 
-		ArrayList<Book> books = new ArrayList();
+		saveBookCopies(bk);
+		
+		ArrayList<Book> books = new ArrayList<Book>();
 		books.add(bk);
-
-		// try {
-		//
-		//
-		// FileOutputStream fileOutputStream = new
-		// FileOutputStream(OUTPUT_DIR2);
-		// ObjectOutputStream output1 = new
-		// ObjectOutputStream(fileOutputStream);
-		//
-		// output1.writeObject(books);
-		// System.out.println("Added");
-		// output1.close();
-		//
-		//
-		// } catch (FileNotFoundException e) {
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		//
 		try {
-
 			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR2));
 			ObjectInputStream input2 = new ObjectInputStream(fileInputStream);
 			books.addAll((ArrayList) input2.readObject());
-
 			input2.close();
 			System.out.println("read successfully!");
-
 			FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR2);
 			ObjectOutputStream output1 = new ObjectOutputStream(fileOutputStream);
-
 			output1.writeObject(books);
 			System.out.println("Added");
 			output1.close();
 
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
-			e.printStackTrace();
+			addFirstBook(books);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public void saveCopyBook(ArrayList<CopyBook> cps) throws IOException {
+	public static void saveBookCopies(Book book) throws IOException{
+		List<CopyBook> copies = new ArrayList<CopyBook>();
+		for(int i = 1; i <= book.getnumCopies(); i++){
+			CopyBook copy = new CopyBook(i, book);
+			copies.add(copy);
+		}
+		saveCopyBook(copies);
+	}
+	
+	public static void saveExtraBookCopies(Book book, int extraCopies) throws IOException{
+		List<CopyBook> copies = new ArrayList<CopyBook>();
+		for(int i = 1; i <= extraCopies; i++){
+			CopyBook copy = new CopyBook(i, book);
+			copies.add(copy);
+		}
+		saveCopyBook(copies);
+	}
+	
+	public static void addFirstBook(List<Book> books) throws IOException{
+		FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR2);
+		ObjectOutputStream output1 = new ObjectOutputStream(fileOutputStream);
 
+		output1.writeObject(books);
+		System.out.println("Added");
+		output1.close();
+	}
+	public static void saveCopyBook(List<CopyBook> cps) throws IOException {
 		FileOutputStream fileOutputStream2 = new FileOutputStream(OUTPUT_DIR3);
 		ObjectOutputStream output2 = new ObjectOutputStream(fileOutputStream2);
-
-		ArrayList<CopyBook> booklis = new ArrayList();
-
+		List<CopyBook> booklis = new ArrayList<CopyBook>();
 		try {
-
-			// Read from the stored file
 			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR3));
 			ObjectInputStream input = new ObjectInputStream(fileInputStream);
+			booklis = (ArrayList<CopyBook>) input.readObject();
+			input.close();
+			System.out.println("working");
+			cps.addAll(booklis);
+			output2.writeObject(cps);
+			System.out.println("Added");
+			output2.close();
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			output2.writeObject(cps);
+			output2.close();
+			System.out.println("Something is wrong here!!");
+//			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void writeBooksToFile(List<Book> newBooks) throws IOException {
+		try {
+			FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_DIR2);
+			ObjectOutputStream output1 = new ObjectOutputStream(fileOutputStream);
 
-			if (input.available() > 0) {
-
-				booklis = (ArrayList) input.readObject();
-				input.close();
-				System.out.println("working");
-				cps.addAll(booklis);
-
-				output2.writeObject(cps);
-				System.out.println("Added");
-				output2.close();
-			} else {
-				output2.writeObject(cps);
-				output2.close();
-			}
-
+			output1.writeObject(newBooks);
+			System.out.println("Added");
+			output1.close();
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		}
-
 	}
 
 	public static LibraryMember findMemberByName(String name) throws IOException, ClassNotFoundException {
 
 		LibraryMember memberf = null;
-		ArrayList<LibraryMember> memlis = new ArrayList();
+		ArrayList<LibraryMember> memlis = new ArrayList<LibraryMember>();
 
 		try {
 
@@ -207,7 +195,7 @@ public class DataFacade {
 
 	public static Book findBookByISBN(String title) throws IOException, ClassNotFoundException {
 		Book bkf = null;
-		ArrayList<Book> memlis = new ArrayList();
+		List<Book> memlis = new ArrayList<Book>();
 
 		try {
 			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR2));
@@ -231,8 +219,9 @@ public class DataFacade {
 	}
 	
 	public static LibraryMember findMemberByMemberId(String memberID) throws IOException, ClassNotFoundException {
+		System.out.println("I am finished!!!");
 		LibraryMember memberf = null;
-		ArrayList<LibraryMember> memlis = new ArrayList();
+		List<LibraryMember> memlis = new ArrayList<LibraryMember>();
 		try {
 			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR));
 			ObjectInputStream input = new ObjectInputStream(fileInputStream);
@@ -244,9 +233,12 @@ public class DataFacade {
 				}
 			}
 		} catch (FileNotFoundException e) {
+			System.out.println("ffffffffffffffffffffffffffffff");
 		} catch (IOException e) {
+			System.out.println("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			System.out.println("ccccccccccccccccccccccccccccccccccccc");
 			e.printStackTrace();
 		}
 		return memberf;
@@ -266,6 +258,49 @@ public class DataFacade {
 			e.printStackTrace();
 		}
 		return records;
+	}
+	public List<Book> getAllBooks(){
+		List<Book> books = null;
+		try {
+
+			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR2));
+			ObjectInputStream input = new ObjectInputStream(fileInputStream);
+			books = (ArrayList<Book>) input.readObject();
+			input.close();
+			System.out.println("read successfully!");
+
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return books;
+	}
+	
+	public static List<CopyBook> getBookCopiesByISBN(String ISBN) throws IOException, ClassNotFoundException {
+		List<CopyBook> temp = new ArrayList<CopyBook>();
+		List<CopyBook> copies = new ArrayList<CopyBook>();
+
+		try {
+			FileInputStream fileInputStream = new FileInputStream(new File(OUTPUT_DIR3));
+			ObjectInputStream input = new ObjectInputStream(fileInputStream);
+			copies = (ArrayList) input.readObject();
+			input.close();
+			
+			for (int i = 0; i < copies.size(); i++) {
+				if (copies.get(i).getBk().getISBN().equals(ISBN)) {
+					temp.add(copies.get(i));
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return temp;
 	}
 
 }

@@ -12,13 +12,15 @@ public class CheckoutRecord implements Serializable{
 	private String bookISBN;
 	private String bookTittle;
 	private Date checkoutDate;
+	private CopyBook copyBook;
 	 
-	public CheckoutRecord(String dueDate, String memberId, String bookISBN, String bookTittle, Date checkoutDate) {
+	public CheckoutRecord(String dueDate, String memberId, String bookISBN, String bookTittle, Date checkoutDate, CopyBook copyBook) {
 		this.dueDate = dueDate;
 		this.memberId = memberId;
 		this.bookISBN = bookISBN;
 		this.bookTittle = bookTittle;
 		this.checkoutDate = checkoutDate;
+		this.copyBook = copyBook;
 	}
 	
 	public String getDueDate() {
@@ -50,6 +52,12 @@ public class CheckoutRecord implements Serializable{
 	}
 	public void setCheckoutDate(Date checkoutDate) {
 		this.checkoutDate = checkoutDate;
+	}
+	public CopyBook getCopyBook() {
+		return copyBook;
+	}
+	public void setCopyBook(CopyBook copyBook) {
+		this.copyBook = copyBook;
 	}
 
 

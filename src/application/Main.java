@@ -35,11 +35,13 @@ public class Main extends Application{
 			this.thisStage = primaryStage;
 			UserDetails user = new UserDetails("admin", "123", "admin");
 			UserDetails user2 = new UserDetails("lib", "123", "librarian");
+			UserDetails user3 = new UserDetails("sadmin", "123", "sadmin");
 			UserObjectInputOutputStream inputOutput = new UserObjectInputOutputStream();
 			
 			List<UserDetails> users = new ArrayList<UserDetails>();
 			users.add(user);
 			users.add(user2);
+			users.add(user3);
 			inputOutput.addUser(users);
 
 			Pane root = (Pane) FXMLLoader.load(Main.class.getResource("LoginForm.fxml"));
@@ -54,9 +56,10 @@ public class Main extends Application{
 
 	@FXML
 	private void handleLoginButtonAction() {
-//		String uname = "lib";
+		
 //		String upass = "123";
-//		
+//		String uname = "admin";
+//		String uname = "sadmin";
 		String uname = username.getText();
 		String upass = password.getText();
 		if (uname.trim().length() == 0 || upass.trim().length() == 0) {
@@ -75,9 +78,12 @@ public class Main extends Application{
 							sac.loadAdminWindow();
 							break;
 						case "librarian":
-							
 							LibrarianController libc = new LibrarianController();
 							libc.loadAdminWindow();
+							break;
+						case "sadmin":
+							SuperAdminController spac = new SuperAdminController();
+							spac.loadSuperAdminWindow();
 							break;
 						default: 
 							break;

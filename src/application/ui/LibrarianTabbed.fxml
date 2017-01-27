@@ -18,7 +18,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="396.0" prefWidth="868.0">
                            <children>
-                              <Button id="btnCancel" layoutX="107.0" layoutY="285.0" mnemonicParsing="false" onAction="#cancelHandler" onMouseClicked="#cancelHandler" prefHeight="37.0" prefWidth="133.0" style="-fx-border-color: red;" text="CANCEL" textFill="#cd2323" />
+                              <Button id="btnCancel" layoutX="107.0" layoutY="285.0" mnemonicParsing="false" onAction="#cancelHandler" onMouseClicked="#cancelHandler" prefHeight="37.0" prefWidth="133.0" style="-fx-border-color: red;" text="CLEAR" textFill="#cd2323" />
                               <GridPane layoutX="65.0" layoutY="67.0" prefHeight="197.0" prefWidth="369.0" style="-fx-background-color: #e2e1d7; -fx-background-radius: 5px;" AnchorPane.bottomAnchor="132.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="433.0" AnchorPane.topAnchor="67.0">
                                  <children>
                                     <Label alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="142.0" text="Member ID">
@@ -38,7 +38,7 @@
                                     </Label>
                                     <TextField id="txtMemberId" fx:id="txtMemberId" onAction="#checkMemberValidity" prefHeight="30.0" prefWidth="196.0" GridPane.columnIndex="2" />
                                     <TextField id="tstISBN" fx:id="txtISBN" onAction="#searchBookByISBN" prefHeight="30.0" prefWidth="196.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <TextField id="dueDate" fx:id="txtdueDate" editable="false" onAction="#checkoutHandler" prefHeight="30.0" prefWidth="196.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <TextField id="dueDate" fx:id="txtdueDate" editable="false" prefHeight="30.0" prefWidth="196.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                  </children>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="86.0" />
@@ -122,6 +122,11 @@
                         </AnchorPane>
                   </content>
                 </Tab>
+                  <Tab fx:id="tbSomething" text="View Checkout Records">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
                 <Tab fx:id="tbView" text="View">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -139,11 +144,6 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                  <Tab fx:id="tbSomething" text="Something Else ">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
               </tabs>
             </TabPane>
          </children>
