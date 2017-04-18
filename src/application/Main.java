@@ -28,20 +28,40 @@ public class Main extends Application{
 	private TextField username;
 	@FXML
 	private TextField password;
+
+	/**
+	 * This method starts the window to display GUI.
+	 * It uses template design pattern to excute differnt commandd and it is part of Application API
+	 *
+	 * @param primaryStage
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		System.out.println("Testing Action listener");
 		try {
 			this.thisStage = primaryStage;
-			UserDetails user = new UserDetails("admin", "123", "admin");
-			UserDetails user2 = new UserDetails("lib", "123", "librarian");
-			UserDetails user3 = new UserDetails("sadmin", "123", "sadmin");
+
+// use of factory method to create Concrete UserDetail Objects
+			UserDetailsFactory factory =new ConcreteUserDetailsFactory();
+
+			UserDetails userAdmin= factory.createUserDetails("Ayu", "myName", "Admin");
+			UserDetails userlib= factory.createUserDetails("Betka", "Betka", "librarian");
+			UserDetails usersadmin= factory.createUserDetails("Eshak", "123", "sadmin");
+
+//			UserDetails user = new UserDetails("admin", "123", "admin");
+//			UserDetails user2 = new UserDetails("lib", "123", "librarian");
+//			UserDetails user3 = new UserDetails("sadmin", "123", "sadmin");
 			UserObjectInputOutputStream inputOutput = new UserObjectInputOutputStream();
 			
 			List<UserDetails> users = new ArrayList<UserDetails>();
-			users.add(user);
-			users.add(user2);
-			users.add(user3);
+			users.add(userAdmin);
+			users.add(userlib);
+			users.add(usersadmin);
+
+
+//			users.add(user);
+//			users.add(user2);
+//			users.add(user3);
 			inputOutput.addUser(users);
 
 			Pane root = (Pane) FXMLLoader.load(Main.class.getResource("LoginForm.fxml"));
@@ -54,6 +74,12 @@ public class Main extends Application{
 		}
 	}
 
+	/**
+	 * handleLoginButtonAction
+	 * This is the main function corresponding to Login Button on the corresponding GUI
+	 *
+	 */
+
 	@FXML
 	private void handleLoginButtonAction() {
 		
@@ -62,39 +88,58 @@ public class Main extends Application{
 //		String uname = "sadmin";
 		String uname = username.getText();
 		String upass = password.getText();
-		if (uname.trim().length() == 0 || upass.trim().length() == 0) {
-			alertMessage("Fill all the required Fields");
-		} else {
-			UserObjectInputOutputStream inputOutput = new UserObjectInputOutputStream();
-			UserDetails user = inputOutput.getUsers(uname, upass);
-			try{
-				if (user.getUsername().equals(null)) {
-					alertMessage("Invalid Username or Password");
-				} else {
-					switch(user.getRole()){
-						case "admin":
-							
-							AdminController sac = new AdminController();
-							sac.loadAdminWindow();
-							break;
-						case "librarian":
-							LibrarianController libc = new LibrarianController();
-							libc.loadAdminWindow();
-							break;
-						case "sadmin":
-							SuperAdminController spac = new SuperAdminController();
-							spac.loadSuperAdminWindow();
-							break;
-						default: 
-							break;
-					}
-					
-				}
-			}catch(Exception e){
-				e.printStackTrace();
-				alertMessage("======Invalid Username or Password");
-			}
-		}
+
+		Validator validator = new Validator(uname, upass);
+		System.out.println(validator.getName());
+
+ 		ChainBuilder chain= new ChainBuilder();
+ 		chain.builChain();
+ 		chain.getAuthonticator().validateRequest(validator);
+
+
+		// Authenticator htos = new AdminValidator();
+//		MyAuthenticator  auth= new AdminValidator();
+//		MyAuthenticator lib = new LibrarianValidator();
+//		MyAuthenticator nullAuth= new NullChecker();
+//
+//		nullAuth.setNextAuthonticator(lib);
+//		lib.setNextAuthonticator(auth);
+
+
+
+//		if (uname.trim().length() == 0 || upass.trim().length() == 0) {
+//			alertMessage("Fill all the required Fields");
+//		} else {
+//			UserObjectInputOutputStream inputOutput = new UserObjectInputOutputStream();
+//			UserDetails user = inputOutput.getUsers(uname, upass);
+//			try{
+//				if (user.getUsername().equals(null)) {
+//					alertMessage("Invalid Username or Password");
+//				} else {
+//					switch(user.getRole()){
+//						case "admin":
+//
+//							AdminController sac = new AdminController();
+//							sac.loadAdminWindow();
+//							break;
+//						case "librarian":
+//							LibrarianController libc = new LibrarianController();
+//							libc.loadAdminWindow();
+//							break;
+//						case "sadmin":
+//							SuperAdminController spac = new SuperAdminController();
+//							spac.loadSuperAdminWindow();
+//							break;
+//						default:
+//							break;
+//					}
+//
+//				}
+//			}catch(Exception e){
+//				e.printStackTrace();
+//				alertMessage("======Invalid Username or Password");
+//			}
+//		}
 	}
 
 	private void alertMessage(String msg) {
